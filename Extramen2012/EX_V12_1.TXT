@@ -1,0 +1,43 @@
+//  Fil:  FRODEH \ OO \ EXTRAMEN \ EX_V12_1.TXT
+
+//  L›sning til eksamen i OOP, 1.juni 2012, oppgave 1.
+//  Laget av Frode Haug, HiG, mai 2012.
+
+
+
+Oppgave 1A:
+
+        SYNTAKTISK  feil i linje nr. 5:   Bytt 'private' med 'protected'.
+
+        SYNTAKTISK  feil i linje nr.18:   Glemt † sende 'n' opp til mora.
+
+        SEMANTISK   feil i linje nr.20:   Glemt 'Etappe::skriv();'
+
+        SEMANTISK   feil i linje nr.25:   Bytt '&&' med '||'.
+
+        SEMANTISK   feil i linje nr.33:   Skrivefeil for 'Peyragudes'.
+
+
+
+
+
+Oppgave 1B:
+
+        - G A -
+        - - V T S N E S
+        E S S E E E S
+        S E E S E E S
+       0
+
+
+
+
+
+Oppgave 1C:
+
+       14 23 9 17
+       14 23 8 13
+       13 14 11 12
+       0 1
+       1 0
+

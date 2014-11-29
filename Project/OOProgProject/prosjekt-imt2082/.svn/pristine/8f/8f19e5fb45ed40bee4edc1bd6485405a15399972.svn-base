@@ -1,0 +1,13 @@
+/****************************************************************************
+	class:        Rom (abstract)
+	read:         n/a
+	write:        n/a
+	author:       ...
+
+	description:  Base (parent) class for Singel, Dobbel and Suite classes
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include "romClass.h"

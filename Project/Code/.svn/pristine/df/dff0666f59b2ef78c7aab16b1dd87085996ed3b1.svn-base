@@ -1,0 +1,80 @@
+/******************************************************************************
+	class:        Reg_Post
+	read:         n/a
+	write:        n/a
+
+	description:  ...
+******************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include "reg_postClass.h"
+
+#include <iostream>										    // For input/output
+#include <string>												  // For string
+#include <fstream>
+#include <ctype.h>
+
+using namespace std;
+
+Reg_Post::Reg_Post()
+{
+	readFromFile();
+}
+
+Reg_Post::~Reg_Post()
+{
+	delete [] descriptions;
+}
+
+void Reg_Post::readFromFile()
+{
+	ifstream inFile("reg_post.dta", ios::in);
+	
+	inFile >> numberOfServices;
+	descriptions = new string[numberOfServices+1];
+	for (int i = 1; i <= numberOfServices; i++)
+	{
+		inFile >> descriptions[i];
+	}
+	inFile.close();
+}
+
+void Reg_Post::display()
+{
+	for (int i = 1; i <= numberOfServices; i++)
+	{
+		cout << i << ": " << descriptions[i] << "\n";
+	}
+}
+
+string Reg_Post::choice()
+{
+	string valg;
+	string text;
+	int nr;
+	cout << "select nr or write text: ";
+	cin.sync(); getline(cin, valg);
+
+	if (isdigit(valg[0]))
+	{
+		nr = atoi(valg.c_str());
+		if (nr <= numberOfServices && nr >= 0)
+		{
+			text = descriptions[nr];
+			return text;
+		}
+		else
+		{
+			cout << "Error: Invalid choice.";
+			cout << "Press any key to continue";
+			cin.ignore(); cin.get();
+		}
+		
+	}
+	else
+	{
+		return valg;
+	}
+}

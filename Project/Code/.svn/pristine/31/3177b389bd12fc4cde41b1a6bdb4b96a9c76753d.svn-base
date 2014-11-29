@@ -1,0 +1,369 @@
+/****************************************************************************
+	class:        Reservasjon
+	read:         n/a
+	write:        n/a
+
+	description:  ...
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES
+   -------------------------------------*/
+#include "hotellClass.h"
+#include "reservasjonClass.h"
+#include "regningClass.h"
+#include <iostream>
+#include <fstream>
+
+/* --------------------------------------
+          NAMESPACE STD SYMBOLS
+   -------------------------------------*/
+using std::cout;
+using std::cin;
+
+extern Hotell* hotellet;
+
+
+/******************************************************************************
+	name:        Reservasjon()
+	description: Constructor for Reservasjon; requests information from the user
+				 to create the reservation.
+				 Parameters sent from Rom are room ID, and arrival + departure
+				 date
+	parameters:  int rID, int arr, int dep
+******************************************************************************/
+Reservasjon::Reservasjon(int rID, int arr, int dep) : Num_element(arr)
+{
+    Timer timecalc;
+    arrival = arr;
+    departure = dep;
+    numberOfDays = tid.forskjell_datoer(arrival,departure);
+	bills = new List(FIFO);
+	
+    costPrDay = new float[numberOfDays];
+	costs = new Pris(hotellet->getFilename());
+
+	if(rID > 300)
+		costPrDay = costs->getPrice(suite, arrival, departure, costPrDay);
+	else if(rID > 200)
+		costPrDay = costs->getPrice(dobbel, arrival, departure, costPrDay);
+	else if (rID > 100)
+		costPrDay = costs->getPrice(singel, arrival, departure, costPrDay);
+	this->inUse = false;
+	
+	
+	// Ask user how many names (s)he wants on the reservation ...
+	numberOfOccupants = readNumber("How many names would you like to put on your reservation?",0,MAX_PAA_ROM);
+
+    // Set up our occupant string array
+    occupant = new std::string[numberOfOccupants+1];
+
+	// Request names from user
+	for(int i = 1; i <= numberOfOccupants; i++)
+	{
+		occupant[i] = readString("Enter name");
+	}
+
+    roomID = rID;
+}
+
+
+/******************************************************************************
+	name:        Reservasjon()
+	description: Constructor for Reservasjon; creates a reservation from information
+				 read from file.
+				 Parameters sent from Rom is a reference tothe file reading object, 
+				 date (arrival date), and the room number
+	parameters:  std::ifstream &infile, int dato, int roomNr
+******************************************************************************/
+Reservasjon::Reservasjon(std::ifstream &inFile, int dato, int roomNr) : Num_element(dato)
+{
+	occupant = new std::string[MAX_PAA_ROM];
+	bills = new List(FIFO);
+	roomID = roomNr;
+	arrival = dato;
+	inFile >> departure >> numberOfDays >> inUse;
+	costPrDay = new float[numberOfDays];
+	inFile.ignore();
+	for (int i = 0; i < numberOfDays; i++)
+	{
+		inFile >> costPrDay[i]; inFile.ignore();
+	}
+	inFile >> extraBed >> bedInUse >> numberOfOccupants;
+	inFile.ignore();
+	for (int i = 1; i <= numberOfOccupants; i++)
+	{
+		getline(inFile, occupant[i]);
+	}
+	inFile >> numberOfBills;
+	inFile.ignore();
+	for (int i = 1; i <= numberOfBills; i++)
+	{
+		Regning* reg = new Regning(inFile);
+		bills->add(reg);
+	}
+}
+
+
+/******************************************************************************
+	name:        ~Reservasjon()
+	description: Destructor for Reservasjon. Deletes objects the reservation object
+				 should have in memory before the object dies.
+	parameters:  n/a
+******************************************************************************/
+Reservasjon::~Reservasjon()
+{
+	delete bills;
+	//delete [] costPrDay;
+	delete [] occupant;
+}
+
+/******************************************************************************
+	name:        bool sameNameAsReservation
+	description: Checks if a given name is contained within the occupants string
+				 array; to see if a name is on a reservation or not. If it is,
+				 the method returns true. Otherwise, returns false.
+	parameters:  std::string name
+	return:		 bool
+******************************************************************************/
+bool Reservasjon::sameNameAsReservation(std::string name)
+{
+	bool nameIsOnReservation = false;
+
+	name = wordsToUpper(name); // Extra check to make sure we get a hit on ex: Per, when user type per. Will this change fuck something up?
+
+	for(int i = 1; i <= numberOfOccupants; i++)
+	{
+		if(name.compare(occupant[i]) == 0)
+			nameIsOnReservation = true;
+	}
+	
+	return nameIsOnReservation;
+}
+
+/******************************************************************************
+	name:        setExtrabedAvailable
+	description: Sets the boolean for whether or not an extra bed is available
+	parameters:  bool e
+******************************************************************************/
+void Reservasjon::setExtrabedAvailable(bool e)
+{
+    extraBed = e;
+}
+
+/******************************************************************************
+	name:        setExtrabedInUse
+	description: Sets the value for whether or not the extra bed is available / in use
+	parameters:  bool e
+******************************************************************************/
+void Reservasjon::setExtrabedInUse(bool e)
+{
+    // If an extrabed isn't available to begin with, set to 0 and exit
+    if(!extraBed)
+    {
+        bedInUse = 0;
+        return;
+    }
+
+    // Otherwise, if it's available, we want to set it to:
+    // 1 - if bed exists but is not in use
+    // 2 - bed exists and is in use
+    // Therefore, we treat our boolean as an int and just increment it.
+    bedInUse = (int)e+1;
+}
+
+/******************************************************************************
+	name:        setBreakfast()
+	description: Sets the boolean for whether or not the guest wants breakfast
+	parameters:  bool b
+******************************************************************************/
+void Reservasjon::setBreakfast(bool b)
+{
+    breakfast = b;
+}
+
+/******************************************************************************
+	name:        setCheckin
+	description: Sets a timestamp for when the user checked in (defaults to now),
+				 and sets the inUse boolean to true.
+	parameters:  int date, int time
+******************************************************************************/
+void Reservasjon::setCheckin(int date, int time)
+{
+	// If we got a negative (or 0) date parameter, use current date
+	if(!date)
+		date = tid.hent_dato(); 
+
+	// If we got a negative (or 0) time parameter, use current time
+	if(!time)
+	{
+		// Get the current time
+		int h, m, s;
+		tid.hent_tid(h,m,s);
+		
+		// We dont care about seconds, it's irrelevant for check-in time ...
+		h *= 100;
+		time = h + m;
+	}
+
+	// Set checkin[0] to our date, and checkin[1] to our time
+	this->checkIn[0] = date;
+	this->checkIn[1] = time;
+	
+	this->inUse = true;
+}
+
+/******************************************************************************
+	name:        setCheckout
+	description: Sets a timestamp for when the user checked out. Defaults to today
+			     if no date is provided, and current time if no time is provided.
+	parameters:  int date, int time
+******************************************************************************/
+void Reservasjon::setCheckout(int date, int time)
+{
+	// If we got a negative (or 0) date parameter, use current date
+	if(!date)
+		date = tid.hent_dato(); 
+
+	// If we got a negative (or 0) time parameter, use current time
+	if(!time)
+	{
+		// Get the current time
+		int h, m, s;
+		tid.hent_tid(h,m,s);
+		
+		// We dont care about seconds, it's irrelevant for check-in time ...
+		h *= 100;
+		time = h + m;
+	}
+
+	// Set checkOut[0] to our date, and checkOut[1] to our time
+	this->checkOut[0] = date;
+	this->checkOut[1] = time;
+}
+
+/******************************************************************************
+	name:        display()
+	description: Displays all information about a reservation.
+				 If checkout date for that reservation is today, and the guest is
+				 currently checked in, it will also display the total cost for that
+				 reservation.
+	parameters:  n/a
+******************************************************************************/
+void Reservasjon::display()
+{
+	float expenses = 0;
+	std::cout << "\nROOM NUMBER: " << roomID;
+	std::cout << "\nCHECK-IN: " << arrival;
+    std::cout << "\nCHECK-OUT: " << departure;
+    std::cout << "\nBREAKFAST: " << (breakfast ? "Yes" : "No");
+    std::cout << "\nEXTRA BED: " << (extraBed ? "Yes" : "No");
+    std::cout << "\n\nTOTAL NIGHTS: " << numberOfDays;
+    std::cout << "\n\nNames on reservation: ";
+
+	for(int i = 0; i < this->numberOfOccupants; i++)
+		std::cout << "\n\t" << (i+1) << ". " << occupant[i+1];
+	
+	// Displays bills if there are any linked to this reservation
+	if(!bills->is_empty())
+	{
+		
+		for(int b = 0; b < bills->no_of_elements(); b++)
+		{
+			Regning* r = (Regning*) bills->remove();
+			std::cout << "\n\nEXPENSE #" << b << ": \n";
+			std::cout << "\t" << r->getDescription();
+			std::cout << "\n\t" << r->getTotalCost() << " " << VALUTA;
+			expenses += r->getTotalCost();
+
+			bills->add(r);
+		}
+	}
+
+	// If the guest is checked in and departure date is today, displaying the reservation also
+	// displays current expenses:
+	if(inUse)
+	{
+		double weekdayCost = 0;
+		double weekendCost = 0;
+		double totalRoomCost = 0;
+
+		std::cout << "\n\n###################################################";
+		std::cout << "\n# TOTAL EXPENSES: " << expenses;
+		if(bedInUse ==2)
+			std::cout << "\n#\t+ Extra bed: " << hotellet->getAdditionalBedCost();
+		if(breakfast)
+			std::cout << "\n#\t+ Breakfast: " << hotellet->getBreakfastCost();
+
+		for(int i = 1; i < (departure-arrival); i++)
+		{
+			totalRoomCost += costPrDay[i];
+		}
+		
+		std::cout << "\n# SUBTOTAL: " << expenses;
+		std::cout << "\n#\tRoom cost: " << totalRoomCost << "(" << (departure-arrival) << " nights)";
+		std::cout << "\n# -------------------------------------------------";
+		std::cout << "\n# TOTAL: " << (expenses + totalRoomCost + 
+			                        (bedInUse== 2 ? hotellet->getAdditionalBedCost() : 0) + 
+									(breakfast ? hotellet->getBreakfastCost() : 0));
+		std::cout << "\n###################################################";
+
+		// Write this data to file
+	}
+}
+
+
+/******************************************************************************
+	name:        writeDataToFile
+	description: Outputs data currently in a Reservasjon object to disk.
+				 Takes a reference to the file output object.
+	parameters:  std::ofstream &outfile
+******************************************************************************/
+
+void Reservasjon::writeDataToFile(std::ofstream &outFile)
+{
+	//occupant = new std::string[MAX_PAA_ROM];
+	outFile << arrival << "\n" << departure << "\n" << numberOfDays << "\n";
+	outFile << (inUse ? 1 : 0) << "\n";
+	for (int i = 0; i < numberOfDays; i++)
+	{
+		outFile << costPrDay[i] << "\t";
+	}
+	outFile << "\n" << (extraBed ? 1 : 0)<< "\n" << (bedInUse ? 1 : 0) << "\n" << numberOfOccupants << "\n";
+	for (int i = 1; i <= numberOfOccupants; i++)
+	{
+		outFile << occupant[i] << "\n";
+	}
+	numberOfBills = bills->no_of_elements();
+	outFile << numberOfBills << "\n";
+	for (int i = 1; i <= numberOfBills; i++)
+	{
+		Regning * temp = (Regning*) bills->remove();
+		temp->writeBillToFile(outFile);
+		bills->add(temp);
+	}
+}
+
+void Reservasjon::setArrival(int arrivalDate)
+{
+	extern Timer tid;
+
+	arrival = arrivalDate;
+	numberOfDays = tid.forskjell_datoer(arrival, departure);
+}
+
+void Reservasjon::setDeparture( int departureDate )
+{
+	extern Timer tid;
+
+	numberOfDays = tid.forskjell_datoer(arrival, departureDate);
+	departure = departureDate;
+	
+}
+
+void Reservasjon::addNewBill(std::string text, float cost)
+{
+	Regning* nyRegning = new Regning(text, cost);
+	bills->add(nyRegning);
+	numberOfBills++;
+}

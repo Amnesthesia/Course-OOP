@@ -1,0 +1,100 @@
+ooprog orienterings time
+
+Vi har tenkt riktig på lista med rom. en liste med single, en med dobbel, en med suite
+huske at bare første i reservasjonlista som skal ha regning.
+
+timer objekt:
+	lage timer objekt globalt, og spør det om funksjoner for å gjøre ting for oss.
+	
+reg_post objekt:
+	Array med pekere til tekstene i navnlista(i regpost fila)
+	funksjon som dispayer alle alternativer, og returnerer teksten som brukeren velger.
+		Eks på fil:
+					PAY-TV
+					telefon
+					minibar
+					bar
+					etc
+					(alle tjenester som er mulig i alle hoteller)
+	hvis brukeren sier kunden skal betale for noe som ikke står i lista, skal det brukeren skrev bli
+	returned istede for noe i lista.
+	
+	
+pris objekt: (oppstår i memory når vi kjører en funksjon lokalt)
+
+leser tid og dato på starten av programmet.
+
+rom: 
+	Singel: 101-105
+	dobbel: 201-203, 301-303
+	suite: 401-405
+	
+rom lister er sortert numerisk
+reservasjoner er numerisk sortert
+regning er fifo
+
+det som skrives til .....<.hst> er når noen skjekker ut. Som en faktura
+
+Vi kan kalle filnavn hva vi vil
+
+i hotell objektets array med fasiliteter, skal ikke ha noe å gjøre med reg_post.
+
+I main:
+	Hotell* hotellet;
+	reg_post reg_post;
+	Timer tid;
+	int dagsdato;
+	
+	srand(0);
+	dagsdato = tid.hent dato();
+	
+	reg_post.lesfrafil();
+	hent_hotell();
+	
+	skrivMeny:
+		meny som kjører hotellet->funksjon();
+		eks. hotellet -> bestill();
+		
+		case 't': if(hotellet)
+					hotellet ->skrivtilfil();
+		case 'h': if (hotellet)
+					hotellet ->skrivtilfil();
+					'something else here'
+					
+Rom har mye i seg, mange funksjonr, og skal kunne svare på mye, f,eks "er du ledig?" (kjører igjennom lister)
+
+når man tryker bestill, så velger man 2 datoer. I pris er det en konstruktor som tar 2 parametere og 1 funksjon inni
+	henter priser fra <...>.prs. 
+	Prisen som gjaldt når personen booka rom, må gjelde når han skjekker inn. Så pris objektet oppstår når man booker.
+		kan sette max grense for antall dager i forveien man kan booke.
+			lage et objekt som heter pris i booking objekt.
+				pris.hent(romtype, ankonstDato, avreiseDato, array priser(denne oppdateres og sendes tilbake)) 4 parametere
+					funksjon skjekker dager mellom datoer
+					forløkke som legger inn priser i pris
+					returner pris[], hver slot er en dag
+					
+Struktur hotellpriser: (skill med tab)
+	Standar, uke:
+		singel	600
+		dobbel	610
+		suite	620
+	standard, helg:
+		singel	4334
+		dobbel	323
+		suite	232
+	20130324 20130326 2 (datoer)
+		singel	uke 2323
+		dobbel	uke 323
+		suite	uke 1212
+	20130402 20130407 3 (datoer)
+		singel	fast	2323
+		dobbel	fast	323
+		suite	fast	2323
+
+Andre spørsmål:
+	hva skjer hvis reservatør ikke kommer? kanskje forkaste alt før dagsdato
+	Lar være å skjekke ut?
+	mulig å bestille flere rom samtidig?
+	hva skjer hvis dato bytter over midnatt, men ting fylles ut?
+	
+	

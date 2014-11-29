@@ -1,0 +1,153 @@
+/****************************************************************************
+	file:         globalFunctions
+	author:       Tommy B. Ingdal
+
+	description:  this file contains all the global functions used
+	by this program.
+*****************************************************************************/
+
+/* --------------------------------------
+               INCLUDE GUARD
+   --------------------------------------*/
+#if !defined(__GLOBALFUNCTIONS_H)
+#define __GLOBALFUNCTIONS_H
+
+
+
+/****************************************************************************
+	name:        int readNumber(string, int, int)
+	description: displays text, reads and returns an int between min and max
+	parameters:  string text, int minValue, int maxValue
+	returns:     integer between min and max
+*****************************************************************************/
+int readNumber(std::string text, int min, int max);
+
+
+/****************************************************************************
+	name:        char readCommand()
+	description: reads a command from user and returns a char in upper case
+	parameters:  n/a
+	returns:     character in upper case
+*****************************************************************************/
+char readCommand();
+
+/******************************************************************************
+	name:        char readChar()
+	description: Reads a single character and returns it as is
+	parameters:  n/a
+	returns:     char
+******************************************************************************/
+char readChar(std::string text);
+
+/******************************************************************************
+	name:        char readChar()
+	description: Reads a single character, and returns only if it matches alternative1 or alternative2
+	parameters:  n/a
+	returns:     char
+******************************************************************************/
+char readChar(std::string text, char alternative1, char alternative2);
+
+
+/******************************************************************************
+	name:        int readTime()
+	description: Requests a date from the user (YYYYMMDD). Returns todays date by default.
+	parameters:  n/a
+	returns:     int
+******************************************************************************/
+int readTime(std::string text);
+
+/******************************************************************************
+	name:        string readString()
+	description: Reads a string from the user (wrapper function for getline used for semantics)
+	parameters:  n/a
+	returns:     string
+******************************************************************************/
+
+std::string readString(std::string text);
+
+/****************************************************************************
+	name:        void showMenu()
+	description: displays a menu to the user
+	parameters:  n/a
+	returns:     n/a
+*****************************************************************************/
+void showMenu();
+
+/****************************************************************************
+	name:        void selectOption()
+	description: let the user choose from all the available commands
+	parameters:  n/a
+	returns:     n/a
+*****************************************************************************/
+void selectOption();
+
+/****************************************************************************
+	name:        void overviewMenu()
+	description: ...
+	parameters:  n/a
+	returns:     n/a
+*****************************************************************************/
+void overviewMenu();
+
+/****************************************************************************
+	name:        void reservationsMenu()
+	description: ...
+	parameters:  n/a
+	returns:     n/a
+*****************************************************************************/
+void reservationsMenu();
+
+/****************************************************************************
+	name:        void selectHotel
+	description: Asks the user for a hotel, then reads all available data
+				 from <forkortet hotell>.dta
+	parameters:  n/a
+	returns:     n/a
+*****************************************************************************/
+std::string selectHotel();
+
+/****************************************************************************
+	name:        int searchHotel
+	description: Asks the user for a hotel, then searches for that specific
+				 hotel in <Hotels>.dta
+	parameters:  string hotelName
+	returns:
+		TRUE:  if the hotel exist
+		FALSE: if the hotels doesn't exist
+*****************************************************************************/
+std::string searchHotel(std::string hotelName);
+
+/****************************************************************************
+	name:        void changeHotel()
+	description: removes the current hotel from memory and asks the user
+				 for a new hotel. It then creates a new hotel object
+				 and reads data from <forkortet hotellnavn>.dta
+	parameters:  n/a
+	returns:     n/A
+*****************************************************************************/
+void changeHotel();
+
+/******************************************************************************
+	name:        void writeHotelData
+	description: Writes hotel data to file <forkortet hotellnavn.dta>
+	parameters:  n/a
+	returns:     n/A
+******************************************************************************/
+void createReservation();
+
+/******************************************************************************
+	name:        void removeReservation
+	description: Requests information (and confirmation) from user to remove a reservation
+	parameters:  n/a
+	returns:     n/A
+******************************************************************************/
+void removeReservation();
+
+/****************************************************************************
+	name:
+	description:
+	parameters:
+	returns:
+*****************************************************************************/
+
+#endif

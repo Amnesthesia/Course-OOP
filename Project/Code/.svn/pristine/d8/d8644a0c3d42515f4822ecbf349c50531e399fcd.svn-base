@@ -1,0 +1,556 @@
+/****************************************************************************
+	class:        Rom (abstract)
+	read:         n/a
+	write:        n/a
+
+	description:  Base (parent) class for Singel, Dobbel and Suite classes
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES
+   -------------------------------------*/
+#include <string>												  // For string
+#include <iostream>												// For iostream
+#include <fstream>											  // For filestream
+
+#include "romClass.h"                                          // For rom class
+#include "listtool2.h"                                          // For listtool
+#include "globalFunctions.h"                            // For global functions
+#include "reg_postClass.h"                                      // For reg_post
+#include "regningClass.h"                                   // For rening class
+#include "hotellClass.h"
+/* --------------------------------------
+             USED NAMESPACE
+   -------------------------------------*/
+using namespace std;
+
+/* --------------------------------------
+            EXTERN VARIABLES
+   -------------------------------------*/
+extern Reg_Post reg_post;     // Declare reg_post as extern so we can access it
+
+Rom::Rom() : Num_element(0)
+{
+	Reservations = new List(Sorted);
+	roomNumber = 0;
+	numberOfBeds = 1;
+	breakfastIncluded = true;
+}
+
+Rom::Rom(int rID) : Num_element(rID)
+{
+    Reservations = new List(Sorted);
+	roomNumber = rID;
+	numberOfBeds = 1;
+	breakfastIncluded = true;
+}
+
+Rom::~Rom()
+{
+	delete Reservations;
+}
+
+Rom::Rom(ifstream &inFile, int nr) : Num_element(nr)
+{
+	int dato;
+	int reservations;
+	roomNumber = nr;
+	inFile >> numberOfBeds >> breakfastIncluded;
+	inFile >> reservations;
+	Reservations = new List(Sorted);
+		for (int i = 1; i <= reservations; i++)
+		{
+			inFile >> dato;
+ 			Reservasjon* nyReservation = new Reservasjon(inFile, dato, nr);
+			Reservations->add(nyReservation);
+		}
+}
+
+/******************************************************************************
+	name:        setReservation(int, int, bool, bool)
+	description: Creates a new reservation for the current room object
+	parameters:  int arrival, int departure, bool breakfast, bool extrabed
+	return:      n/a
+******************************************************************************/
+
+Reservasjon* Rom::setReservation(int arrival, int departure, bool breakfast, bool extrabed)
+{
+	
+    // Now set up the reservation with provided arguments and names ...
+    Reservasjon* r = new Reservasjon(roomNumber, arrival, departure);
+    r->setExtrabedInUse(extrabed);
+    r->setBreakfast(breakfast);
+
+    // Add our reservation to our list of reservations for this room, and return it
+    Reservations->add(r);
+	//Reservations->display_list();
+
+    return r;
+}
+
+/******************************************************************************
+	name:        getRoomNumber()
+	description: Gets the number of the room instance ...
+	parameters:  n/a
+	return:      (int) room number
+******************************************************************************/
+int Rom::getRoomNumber()
+{
+    return roomNumber;
+}
+
+/******************************************************************************
+	name:        isReserved()
+	description: Checks if the room is booked on (or between) certain dates
+	parameters:  int date, int nights
+	return:      (bool)
+					0 = room is not reserved
+					1 = room is reserved
+******************************************************************************/
+bool Rom::isReserved(int date, int nights)
+{
+	// If we have no reservations at all, there's no need to check ...
+	if(Reservations->is_empty())
+		return false;
+
+
+    // We use a tm timestruct to make SURE our dates are correct when iterating later on...
+    struct tm time;
+    int correctedTime;
+
+    // Lets set up that time struct...
+    time.tm_year = date / 10000;
+    time.tm_mon = (date % (time.tm_year * 10000)) / 100;
+    time.tm_mday = (date % (time.tm_year * 10000)) % 100;
+    time.tm_hour = 12;
+    time.tm_min = 0;
+    time.tm_sec = 0;
+    mktime(&time);
+
+    // Loop through the list from end to beginning
+    for(int i = Reservations->no_of_elements(); i > 0; i--)
+    {
+        // ... and remove each element, one at the time ...
+        Reservasjon* r = (Reservasjon*) Reservations->remove_no(i);
+
+        // Now, if nights-parameter is set, we must check the status of the room
+        // for several days ...
+        if(nights > 0)
+        {
+            // Increment date by 1 ...
+            for(int k=1; k<=nights; k++)
+            {
+                // Increment tm_mday, then run mktime to correct potentially invalid values
+                time.tm_mday++;
+                mktime(&time);
+
+                // ... and now, format that to YYYYMMDD :)
+                correctedTime = (time.tm_year * 10000) + (time.tm_mon * 100) + time.tm_mday;
+
+                // If this new time value is a value between the arrival and departure value of the reservation,
+                // that would imply the room is already booked on that day ...
+                if(correctedTime >= r->getArrival() && correctedTime <= r->getDeparture())
+                {
+					// ... and put our reservation back in the list...
+					Reservations->add(r);
+                    // If it's booked, just return -- no point in continuing
+                    return true;
+                }
+            }
+        }
+        else
+            if(date >= r->getArrival() && date <= r->getDeparture())
+            {
+				// ... and put our reservation back in the list...
+				Reservations->add(r);
+				// If it's booked, just return -- no point in continuing
+                return true;
+			}
+    }
+
+    return false;
+}
+
+/******************************************************************************
+	name:        void reservationByName(string, int)
+	description: Iterates through all reservations looking for a specific name,
+                 and depending on the action, lets the user either check in,
+				 check out or remove the reservation. By default it only
+				 displays information about each reservation.
+	parameters:  (string) name, (int) action
+	returns:     n/a
+******************************************************************************/
+
+void Rom::reservationByName(std::string name, int action)
+{
+	for (int i = 1; i <= Reservations->no_of_elements(); i++)
+	{
+		Reservasjon* temp = (Reservasjon*) Reservations->remove_no(i);
+		
+		if (temp->sameNameAsReservation(name))
+		{
+			temp->display();
+			
+			// If this method was called with action set to REMOVE,
+			// ask the user whether or not to remove the reservation.
+			if(action == REMOVE && readChar("Delete reservation?", 'y','n') == 'y')
+			{
+				Reservations->destroy(temp->getArrival());
+			}
+
+			// If the action is set to CHECKIN, and today is the expected arrival date, and the user answers "y" to "Check-in?", 
+			// then set checkin timestamp to current datetime by passing no parameters to setCheckin.
+			else if(action == CHECKIN && temp->getArrival() == tid.hent_dato() && readChar("Check-in?",'y','n') == 'y')
+			{
+				temp->setCheckin();
+				Reservations->add(temp);
+			}
+			else
+				Reservations->add(temp);
+		}
+		else
+		{
+			Reservations->add(temp);
+		}
+	}
+}
+
+
+/******************************************************************************
+	name:        void reservationByDate(int, int)
+	description: Iterates through all reservations looking for a specific arrival or departure date,
+                 and returns the appropriate reservation after displaying its information.
+	parameters:  (int) date, (int) action
+	returns:     n/a
+******************************************************************************/
+
+Reservasjon* Rom::reservationByDate(int date, int action)
+{
+	extern Hotell* hotellet;
+	for (int i = 1; i <= Reservations->no_of_elements(); i++)
+	{
+		Reservasjon* temp = (Reservasjon*) Reservations->remove_no(i);
+		
+		// If this method was called with action CHECKOUT and departure date is the provided date for the reservation,
+		// or action was checkin and arrival date is the date of this reservation, then return the reservation
+		if ((action == CHECKOUT) || (action == CHECKIN && temp->getArrival() == date))
+		{
+			
+			// If action is checkout, destroy reservation, and create a temporary reservation object with errorcode
+			// "reservation has been pruned" to be returned
+			if(action == CHECKOUT && temp->getDeparture() == date)
+			{
+				temp->display();
+				if(readChar("Confirm checkout?",'y','n')=='y')
+				{
+					// Get filename, subtract file ending and apply new filename
+					std::string hotellHst = hotellet->getFilename().substr(0, hotellet->getFilename().size()-4);
+					hotellHst += ".hst";
+		
+					// ... aaaand output! 
+					std::ofstream o(hotellHst.c_str(), std::ios::out|ios::app);
+					temp->writeDataToFile(o);
+
+					Reservations->destroy(temp->getRoomID());
+
+					temp = new Reservasjon(reservationHasBeenPruned);
+				}
+				// Otherwise, put it back in the list
+				else 
+					Reservations->add(temp);
+			}
+			// If action is checkout, and a reservation on the room is current, but departure on reservation is not today,
+			// ask if we want to check him out earlier than planned, and if so, call this method with his/her planned
+			// departure date
+			else if(action == CHECKOUT && temp->getDeparture() >= date && temp->getArrival() <= date)
+			{
+				std::cout << "\nGuest in room " << temp->getRoomID() << " is not meant to check out until " << temp->getDeparture();
+				if(readChar("\nCheck out anyways?",'y','n') == 'y')
+				{
+					Reservations->add(temp);
+					return reservationByDate(temp->getDeparture(), CHECKOUT);
+				}
+			}
+			// If action is check in, ask for confirmation to check in, and display information about the reservation
+			else if(action == CHECKIN && readChar("Check-in?",'y','n') == 'y')
+			{
+				temp->display();
+				temp->setCheckin();
+				Reservations->add(temp);
+			}
+			// Otherwise, put it back in our list
+			else
+			{
+				Reservations->add(temp);
+			}
+			
+			return temp;
+		}
+		// If the method was called with NOOP action, as in NO OPeration, display the data without modifying it; essentially the same as 
+		// checkin, except it ONLY displays data about the reservation, and date may be any date within the time period of the reservation,
+		// as opposed to requiring a specific checkin date. It does however require guests to be checked in.
+		else if (action == NOOP && temp->getDeparture() >= date && temp->getArrival() <= date  && temp->getInUse() == true)
+		{
+			//temp->display(roomNumber);
+			Reservations->add(temp);
+			return temp;
+		}
+	}
+
+	// If no matching reservation was found, return a new reservations object, with
+	// roomID containing the errorcode
+	return new Reservasjon(reservationDoesNotExist);
+}
+
+
+/******************************************************************************
+	name:        void listReservationsGaps
+	description: The inverse of listReservations -- instead of listing when the 
+	             room is reserved, it lists the gaps between reservations, to 
+				 display when the room is NOT reserved
+	parameters:  n/a
+	returns:     n/a
+******************************************************************************/
+void Rom::listReservationsGaps()
+{
+	int availableFrom = tid.hent_dato(), nextArrival = 0;
+	Reservasjon* temp = nullptr;
+
+	for(int i = 1; i <= Reservations->no_of_elements(); i++)
+	{
+		temp = (Reservasjon*) Reservations->remove_no(i);
+		Reservations->add(temp);
+		if(temp->getArrival() <= availableFrom && temp->getDeparture() > tid.hent_dato())
+			availableFrom = temp->getDeparture();
+		else if(temp->getDeparture() < availableFrom)
+			availableFrom = tid.hent_dato();
+		else if(temp->getArrival() > availableFrom)
+			nextArrival = temp->getArrival();
+			
+
+		if(nextArrival > availableFrom)
+			cout << "\nRoom #" << temp->getRoomID() << " is available from " << availableFrom << "-" << nextArrival;
+		
+		availableFrom = temp->getDeparture();
+	}
+
+	if(((availableFrom > 0 && nextArrival == 0) ||( availableFrom > 0 && nextArrival < availableFrom) && temp != nullptr))
+	{
+		cout << "\nRoom #" << temp->getRoomID() << " is available from " << availableFrom;
+		cin.get();
+	}
+	/*int arr, dep;
+
+	// Might as well set arrival to today, to make sure no past reservations show up;
+	// after all, we only care if the room is free on FUTURE dates, not past dates.
+	dep = tid.hent_dato();
+
+	for (int i = 0; i < Reservations->no_of_elements(); i++)
+	{
+		// Get our reservations object ...
+		Reservasjon* temp = (Reservasjon*) Reservations->remove_no(i);
+
+		// put it back in the list again
+		Reservations->add(temp);
+
+		if(temp->getDeparture()>=tid.hent_dato() && temp->getArrival()<=tid.hent_dato())
+			dep = temp->getDeparture();
+		// Set arrival to this objects arrival time, then compare it to departure 
+		// (which is either today, or the last reservations departure time)
+		arr = temp->getArrival();
+
+		// Now first make sure that it's at LEAST one day in between reservations
+		if(dep > arr || (arr-dep)<=0)
+			continue;
+		
+		cout << "\nRoom #" << this->getRoomNumber() << " is available between ";
+		cout << dep << " -> ";
+		
+		// ONLY print to-date if this is not the last reservation. Otherwise room is
+		// available indefinitely.
+		if(i != Reservations->no_of_elements())
+			cout << arr;
+		
+		dep = temp->getDeparture();
+	}*/
+}
+
+/******************************************************************************
+	name:        void listReservations
+	description: Lists all reservations for this object
+	parameters:  n/a
+	returns:     n/a
+******************************************************************************/
+void Rom::listReservations()
+{
+	for (int i = 1; i <= Reservations->no_of_elements(); i++)
+	{
+		Reservasjon* temp = (Reservasjon*) Reservations->remove_no(i);
+		Reservations->add(temp);
+		temp->display();
+	}
+}
+
+/******************************************************************************
+	name:        void writeRomDataToFile(ofstream &)
+	description: Writes data about a specific room to file:
+					Room number
+					Number of beds
+					Breakfast included
+					Reservation(s)
+	parameters:  (ofstream) & file
+	returns:     n/a
+******************************************************************************/
+void Rom::writeRomDataToFile(ofstream & outFile)
+{
+	outFile << roomNumber << "\n" << numberOfBeds << "\n" << (breakfastIncluded ? 1 : 0 )<< "\n";
+	outFile << Reservations->no_of_elements() << "\n";
+		for (int i = 1; i <= Reservations->no_of_elements(); i++)
+		{
+			Reservasjon* temp = (Reservasjon*) Reservations->remove_no(i);
+			Reservations->add(temp);
+			temp->writeDataToFile(outFile);
+		}
+}
+
+/******************************************************************************
+	name:        bool checkReservationData(string, int)
+	description: Checks if a reservation really exist. This functions checks
+	             both the registered user AND the registered date.
+	parameters:  string name, int date
+	returns:     (int) 1 or 0
+					0 = reservation does NOT exist
+					1 = reservation exist
+******************************************************************************/
+bool Rom::checkReservationData(string name, int date)
+{
+	for (int i = 1; i <= Reservations->no_of_elements(); i++)
+	{
+		Reservasjon * temp = (Reservasjon *) Reservations->remove_no(i);
+		Reservations->add(temp);
+
+		if (temp->getArrival() == date && temp->sameNameAsReservation(name))
+			return true;
+		else 
+			return false;
+	}
+}
+
+/******************************************************************************
+	name:        void editReservation(string, int)
+	description: Edit a reservation. If possible, you can change the arrival
+	             and/or departure date.
+	parameters:  (string) name, (int) date
+	returns:     n/a
+******************************************************************************/
+void Rom::editReservation(string name, int date)
+{
+	extern Timer tid;
+	int todaysDate = tid.hent_dato();
+	int newDate;
+	char userCommand;
+
+	for (int i = 1; i <= Reservations->no_of_elements(); i++)
+	{
+		Reservasjon * temp = (Reservasjon *) Reservations->remove_no(i);
+
+		if (temp->getArrival() == date && temp->sameNameAsReservation(name))
+		{
+			if (temp->getInUse() == 0) 
+			{
+				cout << "\nAvailable choices:";
+				cout << "\n\t 1) Change arrival date";
+				cout << "\n\t 2) Change departure date";
+				cout << "\n\t Q) QUIT";
+
+				userCommand = readCommand();
+
+				switch(userCommand)
+				{
+				case '1':
+					{
+						do 
+						{	// Gir "kunde" den allerede registrerte datoen, i tilfellet ikke ledig i andre tidsperioder. (For å hindre en loop man ikke kommer seg ut av)
+							cout << "The arrival date already registered: " << temp->getArrival() << "\n"; // Stygg løsning. Forslag på forbedring?
+							cout << "\nEnter the new arrival date: ";
+							cin >> newDate; cin.ignore();
+						} while (this->isReserved(newDate, tid.forskjell_datoer(newDate, date))); // Check if room is reserved between the new date and deparature.
+
+						temp->setArrival(newDate);
+						cout << "\nNotice: Arrival date has been updated.\n"; cin.get();
+						break;
+					}
+				case '2':
+					{
+						do 
+						{   // Gir "kunde" den allerede registrerte datoen, i tilfellet ikke ledig i andre tidsperioder. (For å hindre en loop man ikke kommer seg ut av)
+							cout << "The departure date already registered: " << temp->getDeparture() << "\n"; // Stygg løsning. Forslag på forbedring?
+							cout << "\nEnter the new departure date: ";
+							cin >> newDate; cin.ignore();
+						} while (this->isReserved( temp->getArrival(), tid.forskjell_datoer(temp->getArrival(), newDate) ));
+
+						temp->setDeparture(newDate);
+						cout << "\nNotice: Departure date has been updated.\n"; cin.get();
+						break;
+					}
+				}
+			}
+			else if(temp->getInUse() == 1)
+			{
+				cout << "\nAvailable choices:";
+				cout << "\n\t 1) Change departure date";
+				cout << "\n\t Q) QUIT";
+
+				userCommand = readCommand();
+			}
+			else
+			{
+				cout << "Error: Can't change arrival date. This person has already checked in.\n";
+				cout << "Press any key to continue"; cin.get();
+			}
+		}
+		Reservations->add(temp);
+	}
+}
+
+/******************************************************************************
+	name:        void addBill()
+	description: If there's a reservation on this room that is currently checked in,
+				 continue to request information to add a new bill for expenses
+				 to that reservation. If no reservation is currently checked in,
+				 but a reservation is made for a period including today's date,
+				 print a message informing the user that a reservation is made but
+				 is not currently checked in.
+	parameters:  n/a
+	returns: 	 n/a
+******************************************************************************/
+void Rom::addBill()
+{
+	for (int i = 1; i <= Reservations->no_of_elements(); i++)//loops reservations
+	{
+		Reservasjon* temp = (Reservasjon*) Reservations->remove_no(i);//create temp
+		Reservations->add(temp);			   //adds the object back into list
+		if (temp->getInUse())//gets if the reseration har checked in and uses room
+		{
+			float cost;
+			string text;
+			cout << "Bill description: \n";
+			reg_post.display();					//dispays reg_post data to user
+			text = reg_post.choice();		   //sets text like returned string
+			cout << "cost: ";
+			cin >> cost;										   //reads cost
+			temp->addNewBill(text, cost);	 	 //adds the bill into bill list
+		}								   //error if guest has not checked in:
+		else if(temp->getArrival() <= tid.hent_dato() && temp->getDeparture() 
+									   >= tid.hent_dato() && !temp->getInUse())
+		{
+			// Print error and wait for user to hit any key to continue
+			cout << "\nNotice: A reservation was found, but guest has not checked in.";
+			cout << "No expenses can be added before guest checks in.";
+			cout << "\nPress the any-key to continue ;)";
+			cin.get(); 
+		}
+
+	}
+}
+/*---------------------------------END-------------------------------------*/

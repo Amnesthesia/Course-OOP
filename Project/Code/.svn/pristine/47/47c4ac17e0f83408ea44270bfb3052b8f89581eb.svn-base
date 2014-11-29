@@ -1,0 +1,111 @@
+/******************************************************************************
+	class:        Pris
+	read:         from <forkortet hotellnavn>.prs
+	write:        n/a
+
+	description:  ...
+******************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include "prisClass.h"
+#include "hotellClass.h"
+#include <iostream>
+#include <fstream>
+
+/*STD SYMBOLS*/
+using std::cin;
+using std::cout;
+using std::string;
+using std::ifstream;
+using std::ios;
+
+
+Pris::Pris(std::string file)
+{
+	setFile(file);
+	readDataFromFile();
+}
+float* Pris::getPrice(int roomtype, int arrival, int departure, float * costPerDay)
+{
+	int i = 0;
+	for(int a = arrival; a < departure; a++)
+	{
+		int weekday = tid.ukedagsnr(a);
+		if(weekday == 5 || weekday == 6)	
+		{
+			switch(roomtype)
+			{
+				case singel:
+					((weekday == 5 || weekday == 6) ? costPerDay[i] = singleRoomWe : costPerDay[i] = singleRoom);
+				case dobbel:
+					((weekday == 5 || weekday == 6)?  costPerDay[i] = doubleRoomWe : costPerDay[i] = doubleRoom);
+				case suite:
+					((weekday == 5 || weekday == 6)?  costPerDay[i] = suiteRoomWe : costPerDay[i] = suiteRoom);
+			}
+		}
+		i++;
+	}
+
+	return costPerDay;
+}
+
+void Pris::setPrice(float value, int for_what, bool weekend)
+{
+	switch(for_what)
+	{
+	case SINGLE:
+		(weekend ? singleRoomWe = value : singleRoom = value);
+	case DOUBLE:
+		(weekend ? doubleRoomWe = value : doubleRoom = value);
+	case SUITE:
+		(weekend ? suiteRoomWe = value : suiteRoomWe = value);
+	}
+}
+
+void Pris::setFile(std::string file)
+{
+	fileName = file.substr(0, file.size()-4);
+	fileName.append(".prs");
+}
+
+void Pris::readDataFromFile()
+{
+	ifstream inFile(fileName.c_str(), ios::in);
+
+	string tempValue;
+
+	if (inFile)
+	{
+		getline(inFile, tempValue);
+		while (!inFile.eof())
+		{
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> singleRoom;
+
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> doubleRoom;
+
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> suiteRoom;
+
+			getline(inFile, tempValue);
+
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> singleRoomWe;
+
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> doubleRoomWe;
+
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> suiteRoomWe;
+		}
+	}
+}

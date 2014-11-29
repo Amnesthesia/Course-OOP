@@ -1,0 +1,48 @@
+//  Fil:  FRODEH \ OO \ EXTRAMEN \ EX_V00_1.TXT
+
+//  L›sningsforslag til eksamen i C++, 25.mai 2000, oppgave 1.
+//  Laget av Frode Haug og Ivar Farup (oppg.1C), HiG, mai 2000.
+//  Litt endret/modifisert av FrodeH, HiG, v†ren 2003
+
+
+
+
+
+Oppgave 1a:
+
+      SYNTAKTISK FEIL i linje nr.17:  Mangler avsluttende "}" p† funksjonen.
+
+      SEMANTISK  FEIL i linje nr.24:  Mangler "Lag::", kaller derfor seg selv!
+
+      SEMANTISK  FEIL i linje nr.31:  "1" m† byttes med "3".
+
+      SEMANTISK  FEIL i linje nr.34:  "<" m† byttes med "<=".
+
+      SYNTAKTISK FEIL i linje nr.38:  "->" er ulovlig, m† bruke "."
+                eller i linje nr.31:  Sett "*" mellom  "Vinner" og "Dragons".
+
+
+
+
+Oppgave 1b:
+
+      3  4  5  6  7
+      0  0  0  7  0
+      2  2  2  3  4
+
+
+
+
+
+Oppgave 1c:
+
+      A: 0
+      A: 9  B: 0
+      A: 2
+      A: 8  B: 2
+      A: 4
+      A: 7  B: 4
+      A: 6
+      A: 6  B: 6
+      A: 8
+      A: 5  B: 8

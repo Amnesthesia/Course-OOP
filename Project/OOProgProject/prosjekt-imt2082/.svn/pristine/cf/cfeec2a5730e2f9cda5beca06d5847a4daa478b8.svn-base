@@ -1,0 +1,45 @@
+/****************************************************************************
+	class:        Reservasjon
+	read:         n/a
+	write:        n/a
+	author:       ...
+
+	description:  ...
+*****************************************************************************/
+
+/* --------------------------------------
+               INCLUDE GUARD
+   --------------------------------------*/
+#if !defined(__RESERVASJONCLASS_H)
+#define __RESERVASJONCLASS_H
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES
+   -------------------------------------*/
+#include <string>
+#include "listtool2.h"
+
+class Reservasjon
+{
+private:
+    int roomID;             // ID of the room
+	int arrival;			// Ankomstdato
+	int departure;			// Avreisedato
+	int numberOfDays;		// Antall døgn (forskjellen på ankomst og avreise)
+	float * costPrDay;		// Dette er tydeligvis et dynamisk array,
+							// siden det skal inneholde priser for alle døgn.
+							// Da antar jeg vi bruker float * <variabel> og
+							// og oppretter riktig størrelse for array runtime. Tanker?
+	List * bills;			// FIFO-liste med regninger.
+	bool extraBed;			// Status for evt. ekstra seng - om tilgjengelig (0/1)
+	int bedInUse;			// Om så er tilfellet, er de i bruk (2) eller ei (1)
+	std::string * occupant; // Array med pekere til navnet på beboerene.
+
+public:
+    Reservasjon();
+    Reservasjon(int roomID, std::string name, int arr, int dep);
+
+
+};
+
+#endif

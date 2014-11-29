@@ -1,0 +1,15 @@
+/****************************************************************************
+	class:        Dobbel (child)
+	read:         n/a
+	write:        n/a
+	author:       ...
+
+	description:  inherits all properties from Rom class
+	Suite also contains the following data members:
+	(bool) Extra beds
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include "romDobbelClass.h"

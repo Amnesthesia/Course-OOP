@@ -1,0 +1,3 @@
+
+enum { NO_DOCTOR_WITH_NAME = -1, NO_DOCTOR_WITH_ID = -2};
+int LAST_DOCTOR_ID = 0;

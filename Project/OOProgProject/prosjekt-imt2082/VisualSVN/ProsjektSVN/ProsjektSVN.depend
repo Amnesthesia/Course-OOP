@@ -1,0 +1,136 @@
+# depslib dependency file v1.0
+1365323920 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/globalFunctions.cpp
+	<iostream>
+	<string>
+	<fstream>
+	<sstream>
+	"hotellClass.h"
+	"consts.h"
+	"globalFunctions.h"
+
+1365225941 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/consts.h
+
+1365315229 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/globalFunctions.h
+
+1365324366 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/hotellClass.cpp
+	<iostream>
+	<string>
+	<fstream>
+	"hotellClass.h"
+	"enums.h"
+	"romSingelClass.h"
+	"romDobbelClass.h"
+	"romSuiteClass.h"
+
+1365323866 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/hotellClass.h
+	"enums.h"
+	"consts.h"
+	<string>
+	<time.h>
+	<stdlib.h>
+	"listtool2.h"
+	"romClass.h"
+
+1365229018 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/listtool2.h
+
+1365103828 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/listtool2.cpp
+	<iostream>
+	<cstring>
+	"listtool2.h"
+
+1365323709 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/reservasjonClass.cpp
+	"reservasjonClass.h"
+	"reservasjonClass.h"
+	<iostream>
+	<fstream>
+
+1365323507 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/reservasjonClass.h
+	<string>
+	"listtool2.h"
+	"consts.h"
+	"timer2.h"
+
+1365323482 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/romClass.cpp
+	<string>
+	"romClass.h"
+	"listtool2.h"
+	"reservasjonClass.h"
+	"globalFunctions.h"
+	<iostream>
+	<fstream>
+
+1365322991 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/romClass.h
+	"listtool2.h"
+	<string>
+	"reservasjonClass.h"
+
+1365319094 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/romDobbelClass.cpp
+	"romDobbelClass.h"
+	<string>
+	<iostream>
+	<fstream>
+
+1365319056 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/romDobbelClass.h
+	"romClass.h"
+	"listtool2.h"
+
+1365296351 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/romSingelClass.cpp
+	"romSingelClass.h"
+	"romClass.h"
+	<iostream>
+	<fstream>
+	<string>
+
+1365296351 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/romSingelClass.h
+	"romClass.h"
+	"listtool2.h"
+	<string>
+
+1365296351 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/romSuiteClass.cpp
+	"romSuiteClass.h"
+	<string>
+	<iostream>
+	<fstream>
+
+1365296351 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/romSuiteClass.h
+	"romClass.h"
+	"listtool2.h"
+	<string>
+
+1365103828 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/timer2.cpp
+	<ctime>
+	"timer2.h"
+
+1365103828 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/timer2.h
+	<ctime>
+
+1365313570 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<cstdlib>
+	"listtool2.h"
+	"timer2.h"
+	"hotellClass.h"
+	"reg_postClass.h"
+	"globalFunctions.h"
+
+1365103828 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/reg_postClass.h
+	<string>
+
+1365225941 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/prisClass.cpp
+	"prisClass.h"
+
+1365103828 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/prisClass.h
+
+1365225941 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/reg_postClass.cpp
+	"reg_postClass.h"
+
+1365225941 source:/home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/regningClass.cpp
+	"regningClass.h"
+
+1365103828 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/regningClass.h
+	<string>
+
+1365298912 /home/seminex/OOProgProject/prosjekt-imt2082/VisualSVN/ProsjektSVN/enums.h
+

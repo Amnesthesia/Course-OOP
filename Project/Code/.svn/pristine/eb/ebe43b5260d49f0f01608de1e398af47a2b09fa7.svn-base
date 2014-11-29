@@ -1,0 +1,670 @@
+/****************************************************************************
+	class:        Hotell
+	read:         <forkortet hotellnavn>.dta
+	write:        <forkortet hotellnavn>.dta
+
+	description:  ...
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES
+   -------------------------------------*/
+#include <iostream>										    // For input/output
+#include <string>												  // For string
+#include <fstream>											  // For filestream
+#include <cstdlib>											        // For itoa
+#include <sstream>										// For use in to_string
+
+#include "timer2.h"                                          // For timer class
+#include "hotellClass.h"                                    // For hotell class
+#include "enums.h"                                                 // For enums
+
+
+/* --------------------------------------
+          NAMESPACE, STD SYMBOLS
+   -------------------------------------*/
+using std::cout;                                                    // For cout
+using std::cin;														 // For cin
+using std::endl;													// For endl
+using std::string;												  // For string
+using std::ifstream;											// For ifstream
+using std::ofstream;											// For ofstream
+using std::ios;														 // For ios
+
+/* --------------------------------------
+		   FUNCTION DEFINITIONS
+   -------------------------------------*/
+
+/******************************************************************************
+	name:        Hotell Constructor
+	description: Constructs the Hotell object, and creates three room lists;
+					Singel (sorted)
+					Dobbel (sorted)
+					Suite (sorted)
+	parameters:  n/a
+	returns: 	 n/a
+******************************************************************************/
+Hotell::Hotell()
+{
+    rooms[singel] = new List(Sorted);
+    rooms[dobbel] = new List(Sorted);
+    rooms[suite] = new List(Sorted);
+}
+
+/******************************************************************************
+	name:        Hotell(string)
+	description: Reads data from filename.dta
+	parameters:  string filename
+	returns: 	 n/a
+******************************************************************************/
+Hotell::Hotell(string openfileName)
+{
+	ifstream inFile(openfileName.c_str(), ios::in);
+	//ifstream inFile("dummy6.dta", ios::in);
+
+	rooms[singel] = new List(Sorted);	//creates sorted list of single rooms
+	rooms[dobbel] = new List(Sorted);	//creates sorted list of double rooms
+	rooms[suite] = new List(Sorted);	//creates sorted list of suites
+
+	int numberOfRooms[3];	//array to keep track of how many rooms of each type
+	facilityDescriptions = new string[MAX_FASILITETER]; //array with descriptions
+
+	getline(inFile, name);				//reads hotel data from file:
+	getline(inFile, streetAddress);	
+	getline (inFile, postAddress);
+	inFile >> mailAddress;
+	inFile >> phoneNumber >> faxNumber >> fileName >> numberOfSuites;
+
+	suiteDescriptions = new string[numberOfSuites];	//array with desc of suites
+	inFile.ignore();
+		for (int i = 0; i < numberOfSuites; i++) //reads descriptions into array:
+		{
+			getline(inFile, suiteDescriptions[i]);
+		}
+
+	inFile >> breakfastCost >> additionalBedCost >> numberOfFacilities;
+
+
+	for (int i = 1; i <= numberOfFacilities; i++) //reads facility desc into array:
+	{
+		inFile >> facilityDescriptions[i];
+	}
+	inFile >> numberOfRooms[singel];  //reads number of single rooms into array:
+	for (int i = 1; i <= numberOfRooms[singel]; i++) //reads single room data:
+	{
+		int nr;
+		inFile >> nr;
+		Singel* nyttRom = new Singel(inFile, nr); //creates single room object
+		rooms[singel] ->add(nyttRom);	//adds room to list of single rooms
+	}
+	inFile >> numberOfRooms[dobbel]; //reads number of double rooms into array:
+	for (int i = 1; i <= numberOfRooms[dobbel]; i++)// reads double room data:
+	{
+		int nr;
+		bool extraBed1;
+		inFile >> extraBed1 >> nr;
+		Dobbel* nyttRom = new Dobbel(inFile, extraBed1, nr); //creates object
+		rooms[dobbel] ->add(nyttRom);	//adds double room object to list
+	}
+	inFile >> numberOfRooms[suite]; inFile.ignore();	//number
+	for (int i = 1; i <= numberOfRooms[suite]; i++) //reads suite data from file:
+	{
+		int nr;
+		int nBeds;
+		int bedMod;
+		int sqremeters;
+		string desc;
+		inFile >> nBeds >> bedMod >> sqremeters >> nr;
+		int rNr = nr - 301;			// forutsetter at alle suitenr er >300,
+						// creates an int to find right suite array element 
+
+		desc = suiteDescriptions[rNr];	//sits string to string in array
+
+		Suite* nyttRom = new Suite(inFile, nBeds, bedMod, sqremeters, desc, nr);
+		rooms[suite] ->add(nyttRom);	//creates object and adds to suite list
+	}
+	inFile.close();	//closes file
+}
+
+/******************************************************************************
+	name:        Hotell Destructor
+	description: Destroys the Hotell object and the three sorted lists;
+					Singel
+					Dobbel
+					Suite
+	parameters:  n/a
+	returns: 	 n/a
+******************************************************************************/
+Hotell::~Hotell()
+{
+	delete rooms[singel];
+	delete rooms[dobbel];
+	delete rooms[suite];
+
+	delete [] facilityDescriptions;
+	delete [] suiteDescriptions;
+}
+
+/******************************************************************************
+	name:        Rom* getRoom(int)
+	description: Searches for a room with specified room number, and returns it 
+	             if found;
+				 if not found, returns an empty single room containing 
+				 appropriate error code
+	parameters:  int roomNr
+	returns: 	 Rom
+******************************************************************************/
+
+Rom* Hotell::getRoom(int roomNr)
+{
+	// First we gotta check if it's a suite, double, or single room.
+	// We know that all suites are >300, doubles are >200, and singles are >100.
+	int type;
+
+  // Also set up a default room to return if no room of specified number exists.
+	                        // Set its room number to the appropriate error code
+	
+
+	if(roomNr>300)
+		type = suite;
+	else if(roomNr>200)
+		type = dobbel;
+	else
+		type = singel;
+	
+	if(rooms[type]->in_list(roomNr))
+	{
+		Rom* tmpRoom;
+		for(int i = 1; i <= rooms[type]->no_of_elements(); i++)
+		{
+			tmpRoom = (Rom*) rooms[type]->remove_no(i);
+			rooms[type]->add(tmpRoom);
+			if(tmpRoom->getRoomNumber() == roomNr)
+			{
+				return tmpRoom;
+			}
+		}
+		
+	}
+
+	return new Singel(roomNumberIsNotReserved);
+}
+
+void Hotell::displayRoomAvailability(int roomNr)
+{
+	Rom* r = this->getRoom(roomNr);
+	
+	if(r->getRoomNumber() > 0)
+		r->listReservationsGaps();
+	else if(r->getRoomNumber() == roomNumberIsNotReserved)
+			cout << "\nNo future reservations made on this room.";
+}
+
+/******************************************************************************
+	name:        void displayReservationsOnRoom(int)
+	description: Displays reservations on a specific room number
+	parameters:  (int) roomNumber
+	returns: 	 n/a
+******************************************************************************/
+void Hotell::displayReservationsOnRoom(int roomNr)
+{
+	Rom* r = this->getRoom(roomNr); 
+	
+	if(r->getRoomNumber() > 0)
+		r->listReservations();
+	else
+	{
+		if(r->getRoomNumber() == roomNumberIsNotReserved)
+			cout << "\nNo future reservations made on this room.";
+	}
+}
+
+/******************************************************************************
+	name:        void displayAvailableRooms
+	description: Finds all rooms of type available between dates provided by 
+	             user and calls the ->display() method on each to display 
+				 information
+	parameters:  n/a
+	returns: 	 n/a
+******************************************************************************/
+void Hotell::displayAvailableRooms()
+{
+	int checkin = readTime("Dato for insjekking");
+	int checkout = readTime("Dato for utsjekking");
+	cout << "\nType" << 
+			"\n" << singel << ". Singel" <<
+			"\n" << dobbel << ". Dobbel" <<
+			"\n" << suite << ". Suite\n";
+	int type = readNumber("Type av rom",singel, suite);
+
+	List* avail = this->getAvailableRooms(checkin, (checkout-checkin), type);
+	
+	for(int i = 0; i < avail->no_of_elements(); i++)
+	{
+		Rom* a = (Rom*) avail->remove_no(i);
+		a->display();
+		avail->add(a);
+	}
+	delete avail;
+}
+
+/******************************************************************************
+	name:        Rom* getAvailableRoom(int, int, int)
+	description: Returns a randomly selected available room between date d1 and 
+	             date d2 of type
+	parameters:  int d1, int d2, int type
+	returns: 	 Rom
+******************************************************************************/
+
+Rom* Hotell::getAvailableRoom(int d1, int d2, int type)
+{
+	// Get ALL available rooms of this type ...
+    List * avail = getAvailableRooms(d1, d2, type);
+
+	// If we get an empty list back, there are no available rooms of that type
+	// between specified dates
+	if(avail->is_empty())
+		return new Singel(noRoomOfSpecifiedTypeAvailable);
+
+    // ... and return the room at that position in our list! :)
+    return (Rom*) avail->remove_no(1);
+}
+
+/******************************************************************************
+	name:        List* getAvailableRooms(int, int, int)
+	description: Returns ALL available rooms of specified type between date d1 
+	             and d2
+	parameters:  int d1, int d2, int type
+	returns: 	 Rom
+******************************************************************************/
+List* Hotell::getAvailableRooms(int d1, int d2, int type)
+{
+	// Set up a list to contain all available rooms we find...
+	List* avail = new List(Sorted);
+
+	// List of numbers to store all room numbers of rooms that are currently reserved in
+	List* n = new List(Sorted);
+    // Check each room to see if it is available between two specified dates
+    for(int i = 0; i < rooms[type]->no_of_elements(); i++) // Er det ikke en bug her? Sjekker den ikke bare rom som allerede er reservert? La oss si to rom er reservert, ut av 99 totalt. Er ikke da denne loopen poengløs?
+    {
+        Rom* r = (Rom*) rooms[type]->remove_no(i);
+
+        // And if it is ... add it to our list of available rooms :D
+        if(!r->isReserved(d1, tid.forskjell_datoer(d1,d2)))
+            avail->add(r);
+		else
+		{
+			n->add(new Num_element(r->getRoomNumber()));
+		}
+
+		// ... and put it back in the list
+		rooms[type]->add(r);
+    }
+
+	if(avail->is_empty())
+	{
+		int rnr=0;
+		do 
+		{
+			switch(type)
+			{
+			case suite:
+				rnr = rand() % STORSTE_ROMNR + (STORSTE_ROMNR-100);
+				break;
+			case dobbel:
+				rnr = rand() % (STORSTE_ROMNR-100) + (STORSTE_ROMNR-200);
+				break;
+			case singel:
+				rnr = rand() % (STORSTE_ROMNR-200) + (STORSTE_ROMNR-300);
+				break;
+			}
+		} while(n->in_list(rnr));
+		Rom* s;
+		switch(type)
+		{
+		case suite:
+			s = new Suite(rnr);
+			avail->add(s);
+			break;
+		case dobbel:
+			s = new Dobbel(rnr);
+			avail->add(s);
+			break;
+		case singel:
+			s = new Singel(rnr);
+			avail->add(s);
+			break;
+		}
+		rooms[type]->add(s);
+	}
+
+	delete n;
+	return avail;
+}
+/******************************************************************************
+	name:        void checkOut
+	description: Check out a user from the hotel
+	parameters:  n/a
+	returns: 	 n/a
+******************************************************************************/
+void Hotell::checkOut()
+{
+	int rID = readNumber("Room number",100,STORSTE_ROMNR);
+	Rom* room = this->getRoom(rID);
+	Reservasjon* r = room->reservationByDate(tid.hent_dato(), CHECKOUT);
+	
+	// Check for errors
+	if(r->getRoomID() == reservationHasBeenPruned)
+	{
+		cout << "\nNotice: This reservation has been pruned.";
+		delete r;
+	}
+	else if(r->getRoomID() == reservationDoesNotExist)
+	{
+		cout << "\nNotice: No reservation on this room is meant to check out today";
+	}
+	else
+		r->display();
+
+	if(!room->hasFutureReservations())
+	{
+		if(rID > 300)
+			rooms[suite]->destroy(rID);
+		else if(rID > 200)
+			rooms[dobbel]->destroy(rID);
+		else if(rID > 100)
+			rooms[singel]->destroy(rID);
+	}
+}
+
+/******************************************************************************
+	name:        void removeReservationBy(string, int)
+	description: Loops through all rooms to find reservations made by a specific 
+	             name, and if an action is specified, asks if the user wants to 
+				 check in, check out, or remove the reservation; otherwise only 
+				 displays data about each reservation
+	parameters:  string name, int action
+	returns:     n/a
+******************************************************************************/
+void Hotell::reservationsBy(std::string name, int action)
+{
+	cout << "\n----------------------------------------------";
+	cout << "\nReservations on the name " << wordsToUpper(name) << "\n";
+
+	for (int i = rooms[singel]->no_of_elements(); i > 0; i--)
+	{
+		Singel* temp = (Singel*) rooms[singel]->remove_no(i);
+		temp->reservationByName(name, action);
+		if(action == REMOVE && !temp->hasFutureReservations())
+		{
+			rooms[singel]->destroy(temp->getRoomNumber());
+		}
+		else
+			rooms[singel]->add(temp);
+	}
+
+	for (int i = rooms[dobbel]->no_of_elements(); i > 0; i--)
+	{
+		Dobbel* temp = (Dobbel*) rooms[dobbel]->remove_no(i);
+		temp->reservationByName(name, action);
+		rooms[dobbel]->add(temp);
+	}
+
+	for (int i = rooms[suite]->no_of_elements(); i > 0; i--)
+	{
+		Suite* temp = (Suite*) rooms[suite]->remove_no(i);
+		temp->reservationByName(name, action);
+		rooms[suite]->add(temp);
+	}
+	cout << "\n----------------------------------------------\n";
+	cout << "Press any key to continue"; cin.get();
+}
+
+/******************************************************************************
+	name:        void displayHotelData()
+	description: Displays data about the hotel
+	parameters:  n/a
+	returns:     n/a
+******************************************************************************/
+void Hotell::displayHotelData()
+{
+	cout << "\n" << name << endl;
+	cout << "--------------------------\n";
+	cout << "Adresse....: " << streetAddress << "\n";
+	cout << "Postadresse: " << postAddress << "\n";
+	cout << "E-post.....: " << mailAddress << "\n";
+	cout << "Tlf........: " << phoneNumber << "\n";
+	cout << "Fax........: " << faxNumber << "\n";
+	cout << "\nPRISER\n";
+	cout << "Frokostpris: " << breakfastCost << " " << VALUTA << "\n";
+	cout << "Ekstra seng: " << additionalBedCost << " " << VALUTA << "\n";
+	cout << "\n" << "FASILITETER\n";
+
+	for (int i = 1; i <= numberOfFacilities; i++)
+		cout << " - " << facilityDescriptions[i] << "\n";
+
+	cout << "\nTrykk en tast for \x86 g\x86 tilbake til hovedmeny."; cin.get();
+}
+
+/******************************************************************************
+	name:        void displaySuiteData()
+	description: Displays data about the suites in the hotel
+	parameters:  n/a
+	returns:     n/a
+******************************************************************************/
+void Hotell::displaySuiteData()
+{
+	cout << "\n" << name << "\n";
+	cout << "---------------------------------\n";
+	cout << "Oversikt over Suiter:\n";
+
+	for (int i=0; i < numberOfSuites; i++)
+		cout << "\tRom " << (i + 301) << ": " << suiteDescriptions[i] << "\n"; 
+
+	cout << "\nTrykk en tast for \x86 g\x86 tilbake til hovedmeny."; cin.get();
+}
+
+/******************************************************************************
+	name:        void writeDataToFile()
+	description: writes hotel data to file <forkortet hotellnavn.dta>
+	parameters:  n/a
+	returns:     n/a
+******************************************************************************/
+void Hotell::writeDataToFile()
+{
+	ofstream outFile(fileName.c_str(), ios::out);
+	//ofstream outFile("dummy6.dta", ios::out);
+	outFile << name << "\n" << streetAddress << "\n" << postAddress << "\n";
+	outFile << mailAddress << "\n" << phoneNumber << "\n" << faxNumber << "\n";
+	outFile << fileName << "\n" << numberOfSuites << "\n";
+		for (int i = 0; i < numberOfSuites; i++)
+		{
+			outFile << suiteDescriptions[i] << "\n";
+		}
+	outFile << breakfastCost << "\n";
+	outFile << additionalBedCost << "\n" << numberOfFacilities << "\n";
+		for (int i = 1; i <= numberOfFacilities; i++)
+		{
+			outFile << facilityDescriptions[i] << "\n";
+		}
+	outFile << rooms[singel]->no_of_elements() << "\n";
+		for (int i = 1; i <= rooms[singel]->no_of_elements(); i++)
+		{
+			Singel* temp = (Singel*) rooms[singel]->remove_no(i);
+			rooms[singel]->add(temp);
+			temp->writeDataToFile(outFile);
+		}
+	outFile << rooms[dobbel]->no_of_elements() << "\n";
+		for (int i = 1; i <= rooms[dobbel]->no_of_elements(); i++)
+		{
+			Dobbel* temp = (Dobbel*) rooms[dobbel]->remove_no(i);
+			rooms[dobbel]->add(temp);
+			temp->writeDataToFile(outFile);
+		}
+	outFile << rooms[suite]->no_of_elements() << "\n";
+		for (int i = 1; i <= rooms[suite]->no_of_elements(); i++)
+		{
+			Suite* temp = (Suite*) rooms[suite]->remove_no(i);
+			rooms[suite]->add(temp);
+			temp->writeDataToFile(outFile);
+		}
+}
+
+/******************************************************************************
+	name:        void changeRoomReservation()
+	description: Change a users room reservation, before or after (s)he has
+				 checked in
+	parameters:  (int) 1 or 0:
+					0 = change reservation (departure and/or checkin) BEFORE a 
+					    user checks in
+					1 = change reservation (departure) AFTER a user have checked 
+					    in
+	returns:     n/a
+******************************************************************************/
+void Hotell::changeRoomReservation()
+{
+	extern int dagsdato;			   // Declare as extern so we can access it
+
+	string name;             // Name of the person who has made the reservation
+	int date;                              // The date the reservation was made
+
+	cout << "Name of the person who made the reservation: "; getline(cin, name);
+	cout << "Checkin date (Ex: " << dagsdato << "): "; cin >> date; cin.ignore();
+
+	for (int i = 1; i <= rooms[singel]->no_of_elements(); i++)
+	{
+		Singel * temp = (Singel *) rooms[singel]->remove_no(i);
+
+		if (temp->checkReservationData(name, date))
+		{
+			temp->reservationByName(name); cin.get();
+			temp->editReservation(name, date);
+		}
+		rooms[singel]->add(temp);
+	}
+
+	for (int i = 1; i <= rooms[dobbel]->no_of_elements(); i++)
+	{
+		Dobbel * temp = (Dobbel *) rooms[dobbel]->remove_no(i);
+
+		if (temp->checkReservationData(name, date))
+		{
+			temp->reservationByName(name); cin.sync();cin.get();
+			temp->editReservation(name, date);
+		}
+		rooms[dobbel]->add(temp);
+	}
+
+	for (int i = 1; i <= rooms[suite]->no_of_elements(); i++)
+	{
+		Suite * temp = (Suite *) rooms[suite]->remove_no(i);
+
+		if (temp->checkReservationData(name, date))
+		{
+			temp->reservationByName(name); cin.get();
+			temp->editReservation(name, date);
+		}
+		rooms[suite]->add(temp);
+	}
+}
+
+/******************************************************************************
+	name:        changeRoom()
+	description: Allows the user to change room
+	parameters:  n/a
+	returns: 	 n/a
+******************************************************************************/
+void Hotell::changeRoom()
+{
+	extern int dagsdato;			   // Declare as extern so we can access it
+
+	string name;             // Name of the person who has made the reservation
+	int date;                              // The date the reservation was made
+
+	cout << "Name of the person who made the reservation: "; getline(cin, name);
+	cout << "Checkin date (Ex: " << dagsdato << "): "; cin >> date; cin.ignore();
+
+	for (int i = 1; i <= rooms[singel]->no_of_elements(); i++)
+	{
+		Singel * temp = (Singel *) rooms[singel]->remove_no(i);
+
+		if (temp->checkReservationData(name, date))
+		{
+			if (readChar("Are you sure you want to change room?", 'Y', 'N') == 'N')
+				rooms[singel]->add(temp);
+			else
+				rooms[singel]->destroy(temp->getRoomNumber());
+				createReservation();
+		}
+		else
+			rooms[singel]->add(temp);
+	}
+
+	for (int i = 1; i <= rooms[dobbel]->no_of_elements(); i++)
+	{
+		Dobbel * temp = (Dobbel *) rooms[dobbel]->remove_no(i);
+
+		if (temp->checkReservationData(name, date))
+		{
+			if (readChar("Are you sure you want to change room?", 'Y', 'N') == 'N')
+				rooms[dobbel]->add(temp);
+			else
+				rooms[dobbel]->destroy(temp->getRoomNumber());
+			createReservation();
+		}
+		else
+			rooms[dobbel]->add(temp);
+	}
+
+	for (int i = 1; i <= rooms[suite]->no_of_elements(); i++)
+	{
+		Suite * temp = (Suite *) rooms[suite]->remove_no(i);
+
+		if (temp->checkReservationData(name, date))
+		{
+			if (readChar("Are you sure you want to change room?", 'Y', 'N') == 'N')
+				rooms[suite]->add(temp);
+			else
+				rooms[suite]->destroy(temp->getRoomNumber());
+			createReservation();
+		}
+		else
+			rooms[suite]->add(temp);
+	}
+}
+/******************************************************************************
+	name:        void newBill()
+	description: ...
+	parameters:  ...
+	returns: 	 n/a
+******************************************************************************/
+void Hotell::newBill()
+{
+	int nr = readNumber("Room number",100,STORSTE_ROMNR);
+
+	if ((rooms[singel])->in_list(nr))
+	{
+		Singel* temp = (Singel*) rooms[singel]->remove(nr);
+		temp->addBill();
+		rooms[singel]->add(temp);
+
+	}
+	else if ((rooms[dobbel])->in_list(nr))
+	{
+		Dobbel* temp = (Dobbel*) rooms[dobbel]->remove(nr);
+		temp->addBill();
+		rooms[dobbel]->add(temp);
+	}
+	else if ((rooms[suite])->in_list(nr))
+	{
+		Suite* temp = (Suite*) rooms[suite]->remove(nr);
+		temp->addBill();
+		rooms[suite]->add(temp);
+	}
+	else
+	{
+		cout << "Error: Couldn't find room " << nr << ".\n";
+		cout << "Press any key to continue";
+		cin.ignore(); cin.get();
+	}
+}

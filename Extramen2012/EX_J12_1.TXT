@@ -1,0 +1,42 @@
+//  Fil:  FRODEH \ OO \ EXTRAMEN \ EX_J12_1.TXT
+
+//  L›sning til kontinuasjonseksamen i OOP, 5.januar 2012, oppgave 1.
+//  Laget av Frode Haug, HiG, desember 2009.
+
+
+
+Oppgave 1A:
+
+        SYNTAKTISK  feil i linje nr.6:    Glemt/utelatt arrayens lengde.
+
+        SEMANTISK   feil i linje nr.9:    Byttet om 't' og 'txt'.
+
+        SYNTAKTISK  feil i linje nr.19:   IKKE stor 'T' i 'true'.
+
+        SEMANTISK   feil i linje nr.27:   IKKE '\t',  men '\n'.
+
+        SEMANTISK   feil i linje nr.30:   Fjerne '!' foran 'obj1.lik(...)'.
+
+
+
+
+
+Oppgave 1B:
+
+       LLEO
+       !IP
+       IOV
+       __VERPOOL
+       AR$EN$L
+
+
+
+
+
+Oppgave 1C:
+
+       12 4
+       2 0 23 69
+       1 36
+       3 1 9 45
+       71

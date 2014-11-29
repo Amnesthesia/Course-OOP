@@ -1,0 +1,39 @@
+# depslib dependency file v1.0
+1367265482 source:/home/amnesthesia/Documents/Code/Oblig3/doctor.cpp
+	"doctor.h"
+
+1367269567 /home/amnesthesia/Documents/Code/Oblig3/doctor.h
+	"prescription.h"
+
+1367269636 /home/amnesthesia/Documents/Code/Oblig3/person.h
+	"globals.h"
+
+1367267187 source:/home/amnesthesia/Documents/Code/Oblig3/main.cpp
+	<iostream>
+	<cstdlib>
+	<time.h>
+	"doctor.h"
+
+1367266739 /home/amnesthesia/Documents/Code/Oblig3/listtool.h
+	<iostream>
+	<cstring>
+
+1367262983 /home/amnesthesia/Documents/Code/Oblig3/consts.h
+
+1367266499 /home/amnesthesia/Documents/Code/Oblig3/prescription.h
+	"person.h"
+
+1367266318 source:/home/amnesthesia/Documents/Code/Oblig3/person.cpp
+	"person.h"
+
+1367267081 /home/amnesthesia/Documents/Code/Oblig3/globals.h
+	<string>
+	"listtool.h"
+	"consts.h"
+
+1367266095 source:/home/amnesthesia/Documents/Code/Oblig3/globals.cpp
+	"globals.h"
+
+1367266020 source:/home/amnesthesia/Documents/Code/Oblig3/prescription.cpp
+	"prescription.h"
+

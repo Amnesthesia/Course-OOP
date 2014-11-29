@@ -1,0 +1,155 @@
+/******************************************************************************
+	class:        Pris
+	read:         from <forkortet hotellnavn>.prs
+	write:        n/a
+
+	description:  Contains all the methods and functions used by the Pris 
+	              object
+******************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include "prisClass.h"
+#include "hotellClass.h"
+#include <iostream>
+#include <fstream>
+
+/* --------------------------------------
+          NAMESPACE, STD SYMBOLS
+   -------------------------------------*/
+using std::cin;
+using std::cout;
+using std::string;
+using std::ifstream;
+using std::ios;
+
+/******************************************************************************
+	name:        Pris
+	description: Constructor for Pris -- first creates the filename for the
+				 file containing prices, then makes sure data is read from file
+				 as soon as the object is created.
+				 Takes string parameter with hotels filename as value
+	parameters:  std::string file
+******************************************************************************/
+Pris::Pris(std::string file)
+{
+	setFile(file);
+	readDataFromFile();
+}
+
+/******************************************************************************
+	name:        float* getPrice
+	description: Iterates from arrival to departure date for a given room type
+				 and inserts the appropriate price per day (according to whether
+				 or not it's a weekday or a holiday/weekend day) into the costPerDay
+				 dynamic float array parameter before returning it
+	parameters:  int roomtype, int arrival, int departure, float * costPerDay
+	return:		 float*
+******************************************************************************/
+float* Pris::getPrice(int roomtype, int arrival, int departure, float * costPerDay)
+{
+	int i = 0;
+	for(int a = arrival; a < departure; a++)
+	{
+		int weekday = tid.ukedagsnr(a);
+		if(weekday == 5 || weekday == 6)	
+		{
+			switch(roomtype)
+			{
+				case singel:
+					((weekday == 5 || weekday == 6) ? costPerDay[i] = 
+                                       singleRoomWe : costPerDay[i] = singleRoom);
+				case dobbel:
+					((weekday == 5 || weekday == 6)?  costPerDay[i] = 
+                                       doubleRoomWe : costPerDay[i] = doubleRoom);
+				case suite:
+					((weekday == 5 || weekday == 6)?  costPerDay[i] = 
+                                        suiteRoomWe : costPerDay[i] = suiteRoom);
+			}
+		}
+		i++;
+	}
+
+	return costPerDay;
+}
+
+/******************************************************************************
+	name:        setPrice
+	description: Sets the price to value, for a room type as specified by for_what.
+				 If weekend is set to true, sets weekend prices. Else sets weekday prices.
+	parameters:  n/a
+******************************************************************************/
+void Pris::setPrice(float value, int for_what, bool weekend)
+{
+	switch(for_what)
+	{
+	case singel:
+		(weekend ? singleRoomWe = value : singleRoom = value);
+	case dobbel:
+		(weekend ? doubleRoomWe = value : doubleRoom = value);
+	case suite:
+		(weekend ? suiteRoomWe = value : suiteRoomWe = value);
+	}
+}
+
+/******************************************************************************
+	name:        setFile
+	description: Sets the filename for the price class by taking the hotels 
+				 filename as parameter, subtracting the file ending and applying
+				 the new file ending
+	parameters:  std::string file
+******************************************************************************/
+void Pris::setFile(std::string file)
+{							//sets filName to file, but drops last 4 characters
+	fileName = file.substr(0, file.size()-4); 
+	fileName.append(".prs");		//appends the right file ending to fileName
+}
+
+
+/******************************************************************************
+	name:        readDataFromFile
+	description: Reads data from disk into the Pris object
+	parameters:  n/a
+******************************************************************************/
+void Pris::readDataFromFile()
+{
+	ifstream inFile(fileName.c_str(), ios::in);	//opens file
+
+	string tempValue;				//temp value used to flush unwanted data
+
+	if (inFile)
+	{
+		getline(inFile, tempValue);	//reads data and gets rid of unwanted data:
+		while (!inFile.eof())
+		{
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> singleRoom;
+
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> doubleRoom;
+
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> suiteRoom;
+
+			inFile.ignore();
+			getline(inFile, tempValue);
+
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> singleRoomWe;
+
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> doubleRoomWe;
+
+			inFile >> tempValue;
+			inFile.ignore();
+			inFile >> suiteRoomWe;
+		}
+	}
+}
+/*---------------------------------END-------------------------------------*/

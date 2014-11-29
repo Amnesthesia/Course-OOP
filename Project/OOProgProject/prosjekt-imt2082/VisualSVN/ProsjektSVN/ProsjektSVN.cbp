@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="dummi" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release Win32">
+				<Option output="ProsjektSVN" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="Debug Win32">
+				<Option output="ProsjektSVN" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+		</Build>
+		<Unit filename="consts.h" />
+		<Unit filename="enums.h" />
+		<Unit filename="globalFunctions.cpp" />
+		<Unit filename="globalFunctions.h" />
+		<Unit filename="hotellClass.cpp" />
+		<Unit filename="hotellClass.h" />
+		<Unit filename="listtool2.cpp" />
+		<Unit filename="listtool2.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="prisClass.cpp" />
+		<Unit filename="prisClass.h" />
+		<Unit filename="reg_postClass.cpp" />
+		<Unit filename="reg_postClass.h" />
+		<Unit filename="regningClass.cpp" />
+		<Unit filename="regningClass.h" />
+		<Unit filename="reservasjonClass.cpp" />
+		<Unit filename="reservasjonClass.h" />
+		<Unit filename="romClass.cpp" />
+		<Unit filename="romClass.h" />
+		<Unit filename="romDobbelClass.cpp" />
+		<Unit filename="romDobbelClass.h" />
+		<Unit filename="romSingelClass.cpp" />
+		<Unit filename="romSingelClass.h" />
+		<Unit filename="romSuiteClass.cpp" />
+		<Unit filename="romSuiteClass.h" />
+		<Unit filename="timer2.cpp" />
+		<Unit filename="timer2.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

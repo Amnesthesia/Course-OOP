@@ -1,0 +1,32 @@
+/******************************************************************************
+	class:        Regning
+	read:         n/a
+	write:        n/a
+
+	description:  ...
+******************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include "regningClass.h"
+#include <iostream>
+#include <fstream>
+
+Regning::Regning(std::string desc, float price)
+{
+	description = desc;
+	totalCost = price;
+}
+
+Regning::Regning(std::ifstream &inFile)
+{
+	getline(inFile, description);
+	inFile >> totalCost;
+	inFile.ignore();
+}
+
+void Regning::writeBillToFile(std::ofstream & outFile)
+{
+	outFile << description << "\n" << totalCost << "\n"; 
+}

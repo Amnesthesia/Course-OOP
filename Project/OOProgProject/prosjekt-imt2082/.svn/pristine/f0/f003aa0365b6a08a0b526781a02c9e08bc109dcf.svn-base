@@ -1,0 +1,46 @@
+/****************************************************************************
+	class:        Reservasjon
+	read:         n/a
+	write:        n/a
+	author:       ...
+
+	description:  ...
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES
+   -------------------------------------*/
+#include "reservasjonClass.h"
+#include "reservasjonClass.h"
+#include <iostream>
+#include <fstream>
+
+/******************************************************************************
+	name:        Reservasjon()
+	description: Constructor for Reservasjon. Creates a reservation for a single occupant
+	parameters:  std::string name, int arr, int dep, int room_id
+******************************************************************************/
+
+Reservasjon::Reservasjon(int roomID, std::string name, int arr, int dep)
+{
+    arrival = arr;
+    departure = dep;
+    numberOfDays = departure-arrival;
+
+    costPrDay = new float[numberOfDays];
+    occupant = new std::string(name);
+    roomID = roomID;
+}
+Reservasjon::Reservasjon(std::ifstream &inFile, int dato) : Num_element(dato)
+{
+	occupant = new std::string[MAX_PAA_ROM];
+	int numberOfOccupants;
+	arrival = dato;
+	inFile >> departure >> numberOfDays;
+	inFile >> numberOfOccupants >> extraBed >> bedInUse;
+	for (int i = 1; i <= numberOfOccupants; i++)
+	{
+		inFile >> occupant[i];
+	}
+}
+

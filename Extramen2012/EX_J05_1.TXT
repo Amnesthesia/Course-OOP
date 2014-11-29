@@ -1,0 +1,42 @@
+//  Fil:  FRODEH \ OO \ EXTRAMEN \ EX_J05_1.TXT
+
+//  Løsningsforslag til kontinuasjonseksamen i C++, 5.januar 2005, oppgave 1.
+//  Laget av Frode Haug, HiG, desember 2004.
+
+
+
+Oppgave 1A:
+
+       SYNTAKTISK  feil i linje nr.11:  To stk. '  m† byttes med to stk. "
+
+       SEMANTISK   feil i linje nr.20:  Mangler "Lag::" foran "skriv();"
+
+       SEMANTISK   feil i linje nr.31:  Mangler "Lag::" foran "skriv();"
+
+       SYNTAKTISK  feil i linje nr.34:  Mangler avsluttende ')' etter "+m".
+
+       SEMANTISK   feil i linje nr.44:  "17" istedetfor "27".
+
+
+
+
+
+Oppgave 1B:
+
+       F
+       M
+       K
+       D
+       I
+
+
+
+
+
+Oppgave 1C:
+
+       6
+       16
+       K
+       E
+       M

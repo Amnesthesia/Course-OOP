@@ -1,0 +1,123 @@
+/****************************************************************************
+	class:        Reservasjon
+	read:         n/a
+	write:        n/a
+	author:       ...
+
+	description:  ...
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES
+   -------------------------------------*/
+#include "reservasjonClass.h"
+#include "reservasjonClass.h"
+#include <iostream>
+#include <fstream>
+
+/******************************************************************************
+	name:        Reservasjon()
+	description: Constructor for Reservasjon. Creates a reservation for a single occupant
+	parameters:  std::string name, int arr, int dep, int room_id
+******************************************************************************/
+
+Reservasjon::Reservasjon(int rID, List* names, int arr, int dep)
+{
+    Timer timecalc;
+    arrival = arr;
+    departure = dep;
+    numberOfDays = tid.forskjell_datoer(arrival,departure);
+
+    costPrDay = new float[numberOfDays];
+    occupants = names;
+
+    roomID = rID;
+
+}
+
+
+Reservasjon::Reservasjon(std::ifstream &inFile, int dato) : Num_element(dato)
+{
+	occupant = new std::string[MAX_PAA_ROM];
+	int numberOfOccupants;
+	arrival = dato;
+	inFile >> departure >> numberOfDays;
+	inFile >> extraBed >> bedInUse >> numberOfOccupants;
+	for (int i = 1; i <= numberOfOccupants; i++)
+	{
+		inFile >> occupant[i];
+	}
+}
+
+/******************************************************************************
+	name:        setExtrabedAvailable
+	description: Sets the boolean for whether or not an extra bed is available
+	parameters:  bool e
+******************************************************************************/
+void Reservasjon::setExtrabedAvailable(bool e)
+{
+    extraBed = e;
+}
+
+/******************************************************************************
+	name:        setExtrabedInUse
+	description: Sets the value for whether or not the extra bed is available / in use
+	parameters:  bool e
+******************************************************************************/
+void Reservasjon::setExtrabedInUse(bool e)
+{
+    // If an extrabed isn't available to begin with, set to 0 and exit
+    if(!extraBed)
+    {
+        bedInUse = 0;
+        return;
+    }
+
+    // Otherwise, if it's available, we want to set it to:
+    // 1 - if bed exists but is not in use
+    // 2 - bed exists and is in use
+    // Therefore, we treat our boolean as an int and just increment it.
+    bedInUse = (int)e+1;
+}
+
+/******************************************************************************
+	name:        setBreakfast()
+	description: Sets the boolean for whether or not the guest wants breakfast
+	parameters:  bool b
+******************************************************************************/
+void Reservasjon::setBreakfast(bool b)
+{
+    breakfast = b;
+}
+
+
+void Reservasjon::display()
+{
+    std::cout << "\nReservation for room " << roomID;
+    std::cout << "\nCHECK-IN: " << arrival;
+    std::cout << "\nCHECK-OUT: " << departure;
+    std::cout << "\nBREAKFAST: " << (breakfast ? "Yes" : "No");
+    std::cout << "\nEXTRA BED: " << (extraBed ? "Yes" : "No");
+    std::cout << "\n\nTOTAL NIGHTS: " << numberOfDays;
+    std::cout << "\n\nNames on reservation: ";
+    occupants->display_list();
+}
+
+void Reservasjon::writeDataToFile(std::ofstream &outFile)
+{
+	int numberOfOccupants;
+	occupant = new std::string[MAX_PAA_ROM];
+	outFile << arrival << departure << numberOfDays;
+	outFile << extraBed << bedInUse;
+	for (int i = 1; i <= MAX_PAA_ROM; i++)
+	{
+		if (occupant[i] != "")
+		{
+			numberOfOccupants++;
+		}
+	}
+		for (int i = 1; i <= numberOfOccupants; i++)
+		{
+			outFile << occupant[i];
+		}
+}

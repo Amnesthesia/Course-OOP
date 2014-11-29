@@ -1,0 +1,32 @@
+/****************************************************************************
+	class:        Hotell
+	read:         <forkortet hotellnavn>.dta
+	write:        <forkortet hotellnavn>.dta
+	author:       ...
+
+	description:  ...
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include <iostream>
+#include "hotellClass.h"
+
+/* --------------------------------------
+             USED NAMESPACE        
+   -------------------------------------*/
+using namespace std;
+
+/* --------------------------------------
+		   FUNCTION DEFINITIONS        
+   -------------------------------------*/
+Hotell::Hotell()
+{
+	cout << "Constructor..." << endl;
+}
+
+Hotell::~Hotell()
+{
+	cout << "destructor..." << endl;
+}

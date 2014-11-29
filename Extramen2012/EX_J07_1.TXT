@@ -1,0 +1,42 @@
+//  Fil:  FRODEH \ OO \ EXTRAMEN \ EX_J07_1.TXT
+
+//  Løsning til kontinuasjonseksamen i C++, 5.januar 2007, oppgave 1.
+//  Laget av Frode Haug, HiG, desember 2006.
+
+
+
+Oppgave 1A:
+        SYNTAKTISK  feil i linje nr.3:     Mangler:  #include <iomanip>
+
+        SYNTAKTISK  feil i linje nr.6:     Bytt ut "TAL" med "TALL".
+
+        SEMANTISK   feil i linje nr.10:    Bytt ut "MAX" med "MAX+1".
+
+        SEMANTISK   feil i linje nr.21:    Stryk "else" f›r "return false;".
+
+        SEMANTISK   feil i linje nr.24:    Sett inn EN ' ' (blank)
+                                           f›r det f›rste '5'-tallet.
+
+
+
+
+
+Oppgave 1B:
+
+       M
+       2
+       M
+       I
+       R
+
+
+
+
+
+Oppgave 1C:
+
+       X  8
+       P
+       W
+       0
+       1

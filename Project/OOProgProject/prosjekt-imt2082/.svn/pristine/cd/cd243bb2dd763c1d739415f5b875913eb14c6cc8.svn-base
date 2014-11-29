@@ -1,0 +1,61 @@
+/****************************************************************************
+	file:         globalFunctions
+	author:       Tommy B. Ingdal
+
+	description:  this file contains all the global functions used
+	by this program.
+*****************************************************************************/
+
+/* --------------------------------------
+               INCLUDE GUARD        
+   --------------------------------------*/
+#if !defined(__GLOBALFUNCTIONS_H)
+#define __GLOBALFUNCTIONS_H
+
+/****************************************************************************
+	name:        int readNumber(string, int, int)
+	description: displays text, reads and returns an int between min and max
+	parameters:  string text, int minValue, int maxValue
+	returns:     integer between min and max
+*****************************************************************************/
+int readNumber(std::string text, int min, int max);
+
+
+/****************************************************************************
+	name:        char readCommand()
+	description: reads a command from user and returns a char in upper case
+	parameters:  n/a
+	returns:     character in upper case
+*****************************************************************************/
+char readCommand();
+
+
+/****************************************************************************
+	name:        void showMenu()
+	description: displays a menu to the user
+	parameters:  n/a
+	returns:     n/a
+*****************************************************************************/
+void showMenu();
+
+/****************************************************************************
+	name:        void selectHotel
+	description: Asks the user for a hotel, then reads all available data
+				 from <forkortet hotell>.dta
+	parameters:  n/a
+	returns:     n/a
+*****************************************************************************/
+void selectHotel();
+
+/****************************************************************************
+	name:        int searchHotel
+	description: Asks the user for a hotel, then searches for that specific
+				 hotel in <Hotels>.dta
+	parameters:  string hotelName
+	returns:     
+		TRUE:  if the hotel exist
+		FALSE: if the hotels doesn't exist
+*****************************************************************************/
+std::string searchHotel(std::string hotelName);
+
+#endif

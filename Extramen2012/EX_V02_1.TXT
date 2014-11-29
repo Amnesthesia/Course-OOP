@@ -1,0 +1,43 @@
+//  Fil:  FRODEH \ OO \ EXTRAMEN \ EX_V02_1.TXT
+
+//  L›sningsforslag til eksamen i C++, 24.mai 2002, oppgave 1.
+//  Laget av Frode Haug, HiG, mai 2002.
+
+
+
+Oppgave 1A:
+
+       SEMANTISK     feil i linje nr.11:  '-' byttes med ':' i utskriften.
+
+       SEMANTISK     feil i linje nr.26:  if (!varighet) ....  '!' fjernes.
+
+       SYNTAKTISK    feil i linje nr.32:  "Ute" m† byttes med "Hvor".
+
+       SYNTAKTISK    feil i linje nr.42:  Skal v‘re '*' foran "arr[5]".
+
+       SEMANTISK     feil i linje nr.45:  "20" og "30" m† bytte plass.
+
+
+
+
+
+Oppgave 1B:
+
+       b
+       e
+       y
+       r
+       M  (eller 77)
+
+
+
+
+
+Oppgave 1C:
+
+       Galtvort   Gygrid
+       Dudleif
+       objA
+       N
+       N
+

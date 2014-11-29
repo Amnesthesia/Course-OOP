@@ -1,0 +1,60 @@
+﻿Build started 2013-04-23 08:14:54.
+     1>Project "C:\Users\poni\Documents\Code\ProsjektSVN\ProsjektSVN.vcxproj" on node 2 (rebuild target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\ProsjektSVN.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt globalFunctions.cpp hotellClass.cpp listtool2.cpp main.cpp prisClass.cpp regningClass.cpp reg_postClass.cpp reservasjonClass.cpp romClass.cpp romDobbelClass.cpp romSingelClass.cpp romSuiteClass.cpp timer2.cpp
+         globalFunctions.cpp
+         hotellClass.cpp
+         listtool2.cpp
+     1>listtool2.cpp(72): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h(105) : see declaration of 'strcpy'
+     1>listtool2.cpp(76): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h(105) : see declaration of 'strcpy'
+         main.cpp
+     1>main.cpp(40): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+         prisClass.cpp
+         regningClass.cpp
+         reg_postClass.cpp
+         reservasjonClass.cpp
+         romClass.cpp
+         romDobbelClass.cpp
+         romSingelClass.cpp
+         romSuiteClass.cpp
+         timer2.cpp
+     1>timer2.cpp(32): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\time.inl(112) : see declaration of 'localtime'
+     1>timer2.cpp(43): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\time.inl(112) : see declaration of 'localtime'
+     1>timer2.cpp(63): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\time.inl(112) : see declaration of 'localtime'
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\poni\Documents\Code\Release\ProsjektSVN.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\ProsjektSVN.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\poni\Documents\Code\Release\ProsjektSVN.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\poni\Documents\Code\Release\ProsjektSVN.lib" /MACHINE:X86 Release\globalFunctions.obj
+         Release\hotellClass.obj
+         Release\listtool2.obj
+         Release\main.obj
+         Release\prisClass.obj
+         Release\regningClass.obj
+         Release\reg_postClass.obj
+         Release\reservasjonClass.obj
+         Release\romClass.obj
+         Release\romDobbelClass.obj
+         Release\romSingelClass.obj
+         Release\romSuiteClass.obj
+         Release\timer2.obj
+         Generating code
+     1>c:\users\poni\documents\code\prosjektsvn\reg_postclass.cpp(115): warning C4715: 'Reg_Post::choice' : not all control paths return a value
+     1>c:\users\poni\documents\code\prosjektsvn\romclass.cpp(403): warning C4715: 'Rom::checkReservationData' : not all control paths return a value
+     1>c:\users\poni\documents\code\prosjektsvn\globalfunctions.cpp(217): warning C4717: 'showMenu' : recursive on all control paths, function will cause runtime stack overflow
+         Finished generating code
+         ProsjektSVN.vcxproj -> C:\Users\poni\Documents\Code\Release\ProsjektSVN.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\poni\Documents\Code\Release\ProsjektSVN.exe;#1" /manifest Release\ProsjektSVN.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\ProsjektSVN.unsuccessfulbuild".
+         Touching "Release\ProsjektSVN.lastbuildstate".
+     1>Done Building Project "C:\Users\poni\Documents\Code\ProsjektSVN\ProsjektSVN.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:05.35

@@ -1,0 +1,26 @@
+Gruppekontrakt
+
+1.) Alle skal holde seg til det vi har på kurset.
+2.) Alt skal være på engelsk (funksjoner, kommentarer, etc)
+3.) Alle skal følge Frode sitt dokument om sedvaner, men med følgende endringer:
+		Navnformering av funksjoner, variabler og constanter skal gjøres på følgende måte:
+		funksjon: getDate()
+					{
+						//kode
+					}
+		variabler: dateTime = something
+		const: MAXSOMETHING = something
+4.) Alle skal bruke SVN for å holde filene oppdatert.
+5.) Alle skal være ferdig med oppgavene sine til gitte frister
+		Hvis frister ikke opprettholdes vil det gis en advarsel, etter 2 advarsler vil det bli kalt inn til fellesmøte med faglærer 
+		hvor det bestemmes om personen må eksluderes eller ikke.
+6.) Alle skal møte til alle forelesninger mens prosjektet pågår.
+7.) Det skal være minimum 2 statusmøter i uken. 
+8.) Etter hvert møte skal referat skrives og lastes opp til svn server, dette skal inneholde avgjørelser som er tatt,
+	hva som er utført/ferdig, planen for fremdriften videre/til neste møte.
+9.) Gruppemedlemmene skal informere hverandre tidlig om de ikke er fornøyd med innsatsen til en av de andre på gruppa.
+10.) Rutine dersom det blir brudd på regler:
+		a.) Samtale mellom alle gruppemedlemmer
+		b.) Hvis medlemmene ikke kommer enighet om problemet vil det bli innkalt til møte med faglærer
+		c.) Faglærer tar en avgjørelse
+11.) Frode sitt forslag til rekke på impementasjon skal følges.

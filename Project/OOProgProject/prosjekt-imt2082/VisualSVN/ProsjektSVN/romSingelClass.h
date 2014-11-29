@@ -1,0 +1,34 @@
+/****************************************************************************
+	class:        Singel (child)
+	read:         n/a
+	write:        n/a
+	author:       ...
+
+	description:  inherits all properties from Rom class
+*****************************************************************************/
+
+/* --------------------------------------
+               INCLUDE GUARD        
+   -------------------------------------*/
+#if !defined(__ROMSINGELCLASS_H)
+#define __ROMSINGELCLASS_H
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include "romClass.h"
+#include "listtool2.h"
+#include <string>
+
+class Singel : public Rom
+{
+private:
+
+public:
+	Singel();
+	Singel(std::ifstream &inFile, int nr);
+
+	void writeDataToFile(std::ofstream & outFile);
+};
+
+#endif

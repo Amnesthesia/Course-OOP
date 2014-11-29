@@ -1,0 +1,139 @@
+# depslib dependency file v1.0
+1365471688 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/hotellClass.cpp
+	<iostream>
+	<string>
+	<fstream>
+	<cstdlib>
+	<sstream>
+	"hotellClass.h"
+	"enums.h"
+	"romSingelClass.h"
+	"romDobbelClass.h"
+	"romSuiteClass.h"
+
+1365467549 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/hotellClass.h
+	"enums.h"
+	"consts.h"
+	<string>
+	<time.h>
+	<stdlib.h>
+	"listtool2.h"
+	"romClass.h"
+
+1365467549 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/enums.h
+
+1365401606 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/consts.h
+
+1365401605 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/listtool2.h
+
+1365467549 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/romClass.h
+	"listtool2.h"
+	<string>
+	"reservasjonClass.h"
+
+1365467549 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/reservasjonClass.h
+	<string>
+	"listtool2.h"
+	"consts.h"
+	"timer2.h"
+
+1365401606 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/timer2.h
+	<ctime>
+
+1365467549 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/romSingelClass.h
+	"romClass.h"
+	"listtool2.h"
+	<string>
+
+1365467549 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/romDobbelClass.h
+	"romClass.h"
+	"listtool2.h"
+
+1365467549 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/romSuiteClass.h
+	"romClass.h"
+	"listtool2.h"
+	<string>
+
+1365401606 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/listtool2.cpp
+	<iostream>
+	<cstring>
+	"listtool2.h"
+
+1365401606 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/prisClass.cpp
+	"prisClass.h"
+
+1365401606 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/prisClass.h
+
+1365401606 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/reg_postClass.cpp
+	"reg_postClass.h"
+
+1365401606 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/reg_postClass.h
+	<string>
+
+1365401606 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/regningClass.cpp
+	"regningClass.h"
+
+1365401606 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/regningClass.h
+	<string>
+
+1365467549 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/reservasjonClass.cpp
+	"reservasjonClass.h"
+	"reservasjonClass.h"
+	<iostream>
+	<fstream>
+
+1365467549 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/romClass.cpp
+	<string>
+	"romClass.h"
+	"listtool2.h"
+	"reservasjonClass.h"
+	"globalFunctions.h"
+	<iostream>
+	<fstream>
+
+1365401606 /home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/globalFunctions.h
+
+1365467549 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/romDobbelClass.cpp
+	"romDobbelClass.h"
+	<string>
+	<iostream>
+	<fstream>
+
+1365467549 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/romSingelClass.cpp
+	"romSingelClass.h"
+	"romClass.h"
+	<iostream>
+	<fstream>
+	<string>
+
+1365467549 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/romSuiteClass.cpp
+	<string>
+	<iostream>
+	<fstream>
+	"romSuiteClass.h"
+
+1365401606 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/timer2.cpp
+	<ctime>
+	"timer2.h"
+
+1365467549 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/globalFunctions.cpp
+	<iostream>
+	<string>
+	<fstream>
+	<sstream>
+	"hotellClass.h"
+	"consts.h"
+	"globalFunctions.h"
+
+1365471443 source:/home/seminex/OOProgProject/ooproghotelbooking/ProsjektSVN/main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<cstdlib>
+	"listtool2.h"
+	"timer2.h"
+	<cstdlib>
+	"hotellClass.h"
+	"reg_postClass.h"
+	"globalFunctions.h"
+

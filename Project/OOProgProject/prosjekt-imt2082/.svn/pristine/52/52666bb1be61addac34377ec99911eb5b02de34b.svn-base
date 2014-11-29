@@ -1,0 +1,13 @@
+/****************************************************************************
+	class:        Singel (child)
+	read:         n/a
+	write:        n/a
+	author:       ...
+
+	description:  inherits all properties from Rom class
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include "romSingelClass.h"

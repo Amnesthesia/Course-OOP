@@ -1,0 +1,45 @@
+/****************************************************************************
+	class:        Hotell
+	read:         <forkortet hotellnavn>.dta
+	write:        <forkortet hotellnavn>.dta
+	author:       ...
+
+	description:  ...
+*****************************************************************************/
+
+/* --------------------------------------
+               INCLUDE GUARD        
+   --------------------------------------*/
+#if !defined(__HOTELLCLASS_H)
+#define __HOTELLCLASS_H
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include <string>
+#include "listtool2.h"
+
+class Hotell
+{
+private:
+	std::string name;										 // Navn på hotellet
+	std::string streetAddress;									  // Gateadresse
+	std::string postAddress;								      // Postadresse
+	std::string mailAddress;									 // Mail-adresse
+	std::string fileName;							     // Filnavn (.dta-filen)
+
+	int phoneNumber;										    // Telefonnummer
+	int faxNumber;												   // Fax-nummer
+	int breakfastCost;										 // Kostnad, frokost
+	int additionalBedCost;								 // Kostnad, ekstra seng
+	int numberOfFacilities;								   // Antall fasiliteter
+
+	std::string * facilityDescriptions;	         // Beskrivelse for fasiliteter
+	List * rooms;	   // Peker-array til romkategoriene; Singel, Dobbel, Suite
+
+public:
+	Hotell();
+
+};
+
+#endif

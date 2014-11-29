@@ -1,0 +1,44 @@
+/****************************************************************************
+	class:        Dobbel (child)
+	read:         n/a
+	write:        n/a
+
+	description:  inherits all properties from Rom class
+	              Suite also contains the following data members:
+					(bool) Extra beds
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES
+   -------------------------------------*/
+#include <string>                                                // For string
+#include <iostream> // For iostream
+#include <fstream> // For file stream
+#include "romDobbelClass.h" // For romDobbel class
+
+/* --------------------------------------
+             USED NAMESPACE
+   -------------------------------------*/
+using namespace std;
+
+
+Dobbel::Dobbel(int rID) : Rom(rID)
+{
+	extraBed = true;
+}
+
+Dobbel::Dobbel(ifstream &inFile, bool extraBed1, int nr) : Rom(inFile, nr)
+{
+	extraBed = extraBed1;
+}
+
+void Dobbel::writeDataToFile(ofstream &outFile)
+{
+	outFile << extraBed << "\n";
+	writeRomDataToFile(outFile);
+}
+
+void Dobbel::dobbleReservationByName(string name)
+{
+	reservationByName(name);
+}

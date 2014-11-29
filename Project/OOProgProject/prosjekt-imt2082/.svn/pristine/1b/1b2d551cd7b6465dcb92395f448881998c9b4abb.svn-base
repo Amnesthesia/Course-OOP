@@ -1,0 +1,136 @@
+/****************************************************************************
+	class:        Hotell
+	read:         <forkortet hotellnavn>.dta
+	write:        <forkortet hotellnavn>.dta
+	author:       ...
+
+	description:  ...
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES
+   -------------------------------------*/
+#include <iostream>
+#include <string>
+#include <fstream>
+
+#include "hotellClass.h"
+#include "enums.h"
+#include "romSingelClass.h"
+#include "romDobbelClass.h"
+#include "romSuiteClass.h"
+
+/* --------------------------------------
+             USED NAMESPACE
+   -------------------------------------*/
+using namespace std;
+
+/* --------------------------------------
+		   FUNCTION DEFINITIONS
+   -------------------------------------*/
+Hotell::Hotell()
+{
+    rooms[singel] = new List(Sorted);
+    rooms[dobbel] = new List(Sorted);
+    rooms[suite] = new List(Sorted);
+}
+
+Hotell::Hotell(string fileName)
+{
+	ifstream inFile(fileName.c_str(), ios::in);
+
+	rooms[singel] = new List(Sorted);
+	rooms[dobbel] = new List(Sorted);
+	rooms[suite] = new List(Sorted);
+
+	int numberOfRooms[3];
+	facilityDescriptions = new string[MAX_FASILITETER];
+
+	getline(inFile, name);
+	inFile >> streetAddress >> postAddress >> mailAddress;
+	inFile >> phoneNumber >> faxNumber >> fileName >> breakfastCost;
+	inFile >> additionalBedCost >> numberOfFacilities;
+	for (int i = 1; i <= numberOfFacilities; i++)
+	{
+		inFile >> facilityDescriptions[i];
+	}
+	inFile >> numberOfRooms[singel];
+	for (int i = 1; i <= numberOfRooms[singel]; i++)
+	{
+		int nr;
+		inFile >> nr;
+		Singel* nyttRom = new Singel(inFile, nr);
+		rooms[singel] ->add(nyttRom);
+	}
+	inFile >> numberOfRooms[dobbel];
+	for (int i = 1; i <= numberOfRooms[dobbel]; i++)
+	{
+		int nr;
+		inFile >> nr;
+		Dobbel* nyttRom = new Dobbel(inFile, nr);
+		rooms[dobbel] ->add(nyttRom);
+	}
+	inFile >> numberOfRooms[suite];
+	for (int i = 1; i <= numberOfRooms[suite]; i++)
+	{
+		int nr;
+		inFile >> nr;
+		Suite* nyttRom = new Suite(inFile, nr);
+		rooms[suite] ->add(nyttRom);
+	}
+	inFile.close();
+}
+
+Hotell::~Hotell()
+{
+
+}
+
+/******************************************************************************
+	name:        getAvailableRoom(int, int, int)
+	description: Returns a randomly selected available room
+	parameters:  int d1, int d2, int type
+	returns: 	 Rom
+******************************************************************************/
+
+Rom* Hotell::getAvailableRoom(int d1, int d2, int type)
+{
+    // If there's no rooms of that type, return an empty room
+    if(rooms[type]->is_empty())
+        return new Rom();
+
+    // Set up a temporary list -- a copy of room[type] list
+    List temporary = *rooms[type];
+
+    // Set up a list to contain all available rooms we find...
+    List* avail = new List(Sorted);
+
+    // Check each room to see if it is available between two specified dates
+    for(int i = 0; i < rooms[type]->no_of_elements(); i++)
+    {
+        Rom* r = (Rom*) temporary.remove();
+
+        // And if it is ... add it to our list of available rooms :D
+        if(!r->isReserved(d1, tid.forskjell_datoer(d1,d2)))
+            avail->add(r);
+    }
+
+    // Randomize a number between 0 and the amount of elements in our list
+    int finalRoom = rand() % avail->no_of_elements();
+
+    // ... and return the room at that position in our list! :)
+    return (Rom*) avail->remove_no(finalRoom);
+}
+
+/******************************************************************************
+	name:        displayHotelData()
+	description: Displays data about the hotel
+	parameters:
+******************************************************************************/
+void Hotell::displayHotelData()
+{
+	cout << "Hotell: " << name << endl;
+
+
+	cin.get();
+}

@@ -1,0 +1,117 @@
+STRUCTURE:
+---------------------
+
+Name
+Address
+Zipcode
+Email
+Phone
+Fax
+Filename
+BreakfastCost
+ExtraBedCost
+nFacilities
+	Singel
+		room_no
+		nBeds
+		nReservations
+			tm_check_in
+			tm_check_out
+			breakfast_included			
+			nDays
+			nGuests
+			extrabed_status
+			nCheckinNames
+				Name #1
+				Name #2
+				.
+				.
+				.
+	Double
+		room_no
+		nBeds
+		extra_bed_avail
+		nReservations
+			tm_check_in
+			tm_check_out
+			breakfast_included
+			nDays
+			nGuests
+			extrabed_status
+			nCheckinNames
+				Name #1
+				Name #2
+				.
+				.
+				.
+	Suite
+		room_no
+		nBeds
+		nBedModifier (+- 4?)
+		square_meters
+		description
+		nReservations
+			tm_check_in
+			tm_check_out
+			breakfast_included
+			nDays
+			nGuests
+			extrabed_status
+			nCheckinNames
+				Name #1
+				Name #2
+				.
+				.
+				.
+			
+		
+
+
+				.
+SAMPLE:			
+---------------------
+
+Hotellet i Gjøvik
+Teknologieveien
+2818 Gjøvik
+mail@test.no
+12345678
+87654321
+hig.dta
+500
+100
+2
+Basseng
+Bar
+	[Singel]
+	101
+	1
+	2
+	1
+	20130403
+	20130410
+	7
+	1
+	0
+	1
+	2
+	Per
+	Ola
+
+	
+
+	[Double]
+	201
+	2
+	1
+	1
+	20130410
+	7
+	3
+	1
+	2
+	2
+	Per
+	Kari
+
+	

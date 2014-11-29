@@ -1,0 +1,52 @@
+# depslib dependency file v1.0
+1362388670 source:/home/seminex/Documents/Code/OOProg_Oblig2/main.cpp
+	<iostream>
+	<fstream>
+	<cstring>
+	<cctype>
+	"include/individual.h"
+	"include/adult.h"
+	"include/child.h"
+	"include/partner.h"
+	"include/employee.h"
+
+1362384086 /home/seminex/Documents/Code/OOProg_Oblig2/include/individual.h
+	<fstream>
+	<stdio.h>
+	<stdlib.h>
+
+1362202826 /home/seminex/Documents/Code/OOProg_Oblig2/include/adult.h
+	"individual.h"
+
+1362387336 /home/seminex/Documents/Code/OOProg_Oblig2/include/child.h
+	"individual.h"
+
+1362386355 /home/seminex/Documents/Code/OOProg_Oblig2/include/partner.h
+	"adult.h"
+
+1362386139 /home/seminex/Documents/Code/OOProg_Oblig2/include/employee.h
+	"adult.h"
+	"partner.h"
+	"child.h"
+
+1362388763 source:/home/seminex/Documents/Code/OOProg_Oblig2/src/adult.cpp
+	"../include/adult.h"
+	<iostream>
+
+1362386268 source:/home/seminex/Documents/Code/OOProg_Oblig2/src/child.cpp
+	"../include/child.h"
+	<iostream>
+
+1362388087 source:/home/seminex/Documents/Code/OOProg_Oblig2/src/employee.cpp
+	"../include/employee.h"
+	<iostream>
+
+1362384589 source:/home/seminex/Documents/Code/OOProg_Oblig2/src/individual.cpp
+	"../include/individual.h"
+	<cstring>
+	<iostream>
+
+1362386606 source:/home/seminex/Documents/Code/OOProg_Oblig2/src/partner.cpp
+	"../include/partner.h"
+	<iostream>
+

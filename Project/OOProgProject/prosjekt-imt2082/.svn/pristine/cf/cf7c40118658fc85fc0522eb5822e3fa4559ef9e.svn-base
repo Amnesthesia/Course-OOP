@@ -1,0 +1,52 @@
+/******************************************************************************
+	created:		04/04/2013
+	faculty:		IMT
+	title:			...
+	authors:		Halvor M. Thoresen, Tommy B. Ingdal, Victor Rudolfsson 
+	
+	description:	...
+******************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include <iostream>
+#include <fstream>
+#include <string>
+#include "listtool2.h"
+#include "timer2.h"
+
+#include "consts.h"
+#include "globalFunctions.h"
+#include "hotellClass.h"
+#include "reg_postClass.h"
+
+/* --------------------------------------
+              USED NAMESPACE        
+   -------------------------------------*/
+using namespace std;
+
+/* --------------------------------------
+               MAIN PROGRAM        
+   -------------------------------------*/
+int main()
+{
+	Hotell * hotellet;								// Pointer to Hotell object
+	Reg_Post reg_post;								// Reg_Post object
+	Timer tid;									    // Tid object
+
+	int dagsdato;
+
+	srand(0);
+	dagsdato = tid.hent_dato();
+
+
+	//showMenu();
+
+	/* DEBUGING */
+	selectHotel();
+
+
+
+	return 0;
+}

@@ -1,0 +1,51 @@
+/******************************************************************************
+	class:        Regning
+	read:         n/a
+	write:        n/a
+
+	description:  ...
+******************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include "regningClass.h"								   // For regning class
+#include <iostream>											    // For iostream
+#include <fstream>											 // For file stream
+
+/******************************************************************************
+	name:        Regning
+	description: Constructor for Regning -- sets the description and price
+				 of this bill to the description and price provided as 
+				 parameters.
+	parameters:  std::string desc, float price
+******************************************************************************/
+Regning::Regning(std::string desc, float price)
+{
+	description = desc;								 // Set description to desc
+	totalCost = price;								  // Set totalCost to price
+}
+
+/******************************************************************************
+	name:        Regning
+	description: Constructor for regning when reading from disk using the 
+				 referenced input stream object provided as parameter.
+	parameters:  std::ifstream &inFile
+******************************************************************************/
+Regning::Regning(std::ifstream &inFile)
+{
+	getline(inFile, description);                  // Get description from file
+	inFile >> totalCost;                                  // Get cost from file
+	inFile.ignore();                                       // Ignore empty char
+}
+
+/******************************************************************************
+	name:        writeBillToFile
+	description: Outputs information contained in this bill to disk using the
+				 referenced output stream object provided as parameter.
+	parameters:  n/a
+******************************************************************************/
+void Regning::writeBillToFile(std::ofstream & outFile)
+{
+	outFile << description << "\n" << totalCost << "\n"; 
+}

@@ -1,0 +1,70 @@
+/******************************************************************************
+	class:        Pris
+	read:         from <forkortet hotellnavn>.prs
+	write:        n/a
+
+	description:  ...
+******************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include "prisClass.h"
+#include "hotellClass.h"
+#include <iostream>
+#include <fstream>
+
+
+
+Pris::Pris(std::string file)
+{
+	setFile(file);
+	readDataFromFile();
+}
+float* Pris::getPrice(int roomtype, int arrival, int departure, float * costPerDay)
+{
+	int i = 0;
+	for(int a = arrival; a < departure; a++)
+	{
+		int weekday = tid.ukedagsnr(a);
+		if(weekday == 5 || weekday == 6)	
+		{
+			switch(roomtype)
+			{
+				case singel:
+					((weekday == 5 || weekday == 6) ? costPerDay[i] = singleRoomWe : costPerDay[i] = singleRoom);
+				case dobbel:
+					((weekday == 5 || weekday == 6)?  costPerDay[i] = doubleRoomWe : costPerDay[i] = doubleRoom);
+				case suite:
+					((weekday == 5 || weekday == 6)?  costPerDay[i] = suiteRoomWe : costPerDay[i] = suiteRoom);
+			}
+		}
+		i++;
+	}
+
+	return costPerDay;
+}
+
+void Pris::setPrice(float value, int for_what, bool weekend)
+{
+	switch(for_what)
+	{
+	case SINGLE:
+		(weekend ? singleRoomWe = value : singleRoom = value);
+	case DOUBLE:
+		(weekend ? doubleRoomWe = value : doubleRoom = value);
+	case SUITE:
+		(weekend ? suiteRoomWe = value : suiteRoomWe = value);
+	}
+}
+
+void Pris::setFile(std::string file)
+{
+	fileName = file.substr(0, file.size()-4);
+	fileName.append(".prs");
+}
+
+void Pris::readDataFromFile()
+{
+	std::ifstream inFile(fileName.c_str(), std::ios::in);
+}

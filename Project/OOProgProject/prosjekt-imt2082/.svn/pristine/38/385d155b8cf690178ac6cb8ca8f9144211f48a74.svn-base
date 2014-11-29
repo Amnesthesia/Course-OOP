@@ -1,0 +1,58 @@
+/****************************************************************************
+	class:        Reservasjon
+	read:         n/a
+	write:        n/a
+	author:       ...
+
+	description:  ...
+*****************************************************************************/
+
+/* --------------------------------------
+               INCLUDE GUARD
+   --------------------------------------*/
+#if !defined(__RESERVASJONCLASS_H)
+#define __RESERVASJONCLASS_H
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES
+   -------------------------------------*/
+#include <string>
+#include "listtool2.h"
+#include "consts.h"
+#include "timer2.h"
+
+extern Timer tid;
+
+class Reservasjon : public Num_element
+{
+private:
+    int roomID;             // ID of the room
+	int arrival;			// Ankomstdato
+	int departure;			// Avreisedato
+	int numberOfDays;		// Antall døgn (forskjellen på ankomst og avreise)
+	float * costPrDay;		// Dette er tydeligvis et dynamisk array,
+	bool breakfast;			// siden det skal inneholde priser for alle døgn.
+							// Da antar jeg vi bruker float * <variabel> og
+							// og oppretter riktig størrelse for array runtime. Tanker?
+	List * bills;			// FIFO-liste med regninger.
+	bool extraBed;			// Status for evt. ekstra seng - om tilgjengelig (0/1)
+	int bedInUse;			// Om så er tilfellet, er de i bruk (2) eller ei (1)
+	std::string * occupant; // Array med pekere til navnet på beboerene.
+	List * occupants;
+
+public:
+    Reservasjon();
+    Reservasjon(int rID, List* names, int arr, int dep);
+	Reservasjon(std::ifstream &inFile, int dato);
+
+    int getArrival() { return arrival; } // Returns arrival date
+    int getDeparture() { return departure; } // Returns departure date
+
+    void setExtrabedAvailable(bool e);
+    void setExtrabedInUse(bool e);
+    void setBreakfast(bool b);
+    bool operator ==(std::string name) { if(occupants->in_list(name.c_str())) return true; return false;}
+
+};
+
+#endif

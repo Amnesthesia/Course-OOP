@@ -1,0 +1,51 @@
+//  Fil:  FRODEH \ OO \ EXTRAMEN \ EX_J01_1.TXT
+
+//  Lõsningsforslag til eksamen i C++, 3.januar 2001, oppgave 1.
+//  Laget av Frode Haug, HiG, desember 2000.
+
+
+
+
+
+Oppgave 1a:
+
+        SEMANTISK  FEIL i linje nr.10:  Mangler memory-allokering av "navn":
+                                        navn = new char[strlen(nvn)+1];
+
+        SYNTAKTISK FEIL i linje nr.24:  Skal ha "+=" istedet for "+".
+
+        SYNTAKTISK FEIL i linje nr.36:  Inneholder EN '(' for mye.
+
+        SYNTAKTISK/SEMANTISK
+                   FEIL i linje nr.46:  Person-pekeren har ikke adgang til
+                                        "flere_barn". MÜtte isÜfall heller brukt:
+                                        Kvinne* kv = (Kvinne*) personer[0];
+                                        kv->flere_barn(2);
+
+        FEIL NR.5 VAR TIDLIGERE:
+                 SYNTAKTISK FEIL i linje nr.48:  Dobbeldeklarasjon av "i".
+        MEN, DA KODEN ER RETTE OPP TIL STANDARD C++, Sè UTGèR DENNE.
+        DERMED INNEHOLDER KODEN I DAG KUN FIRE FEIL !
+
+
+
+
+Oppgave 1b:
+
+        LYKTETVEFFET
+        LAKTETVAFFET  A
+        LAKTEBVAFFDT
+        STORMBRINGER  B
+        STBRDBRINGER
+
+
+
+
+
+Oppgave 1c:
+
+        DEFGH
+        A  E  D  C  G  F  E  
+        BTTTF
+        B  T  F  H  
+

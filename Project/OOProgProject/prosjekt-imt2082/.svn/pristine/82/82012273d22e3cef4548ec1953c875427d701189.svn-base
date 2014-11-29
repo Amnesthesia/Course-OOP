@@ -1,0 +1,41 @@
+/****************************************************************************
+	class:        Rom (abstract)
+	read:         n/a
+	write:        n/a
+	author:       ...
+
+	description:  Base (parent) class for Singel, Dobbel and Suite classes
+*****************************************************************************/
+
+/* --------------------------------------
+           INCLUDED DEPENDENCIES        
+   -------------------------------------*/
+#include <string>
+#include "romClass.h"
+#include "listtool2.h"
+#include "reservasjonClass.h"
+#include <iostream>
+#include <fstream>
+/* --------------------------------------
+             USED NAMESPACE        
+   -------------------------------------*/
+using namespace std;
+
+Rom::Rom()
+{
+}
+Rom::Rom(ifstream &inFile, int nr) : Num_element(nr)
+{
+	int dato;
+	int reservations;
+	roomNumber = nr;
+	inFile >> numberOfBeds >> breakfastIncluded;
+	inFile >> reservations;
+	Reservations = new List(Sorted);
+		for (int i = 1; i <= reservations; i++)
+		{
+			inFile >> dato;
+			Reservasjon* nyReservation = new Reservasjon(inFile, dato);
+			Reservations->add(nyReservation);
+		}
+}

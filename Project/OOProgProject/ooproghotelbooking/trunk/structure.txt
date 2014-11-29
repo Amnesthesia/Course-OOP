@@ -1,0 +1,65 @@
+Name
+Address
+PostAddress
+Email
+Phone
+Fax
+Filename
+nSuiteDesctriptions
+	description #1
+	desc #2
+	...
+	...
+	...
+	...
+	...
+	...
+	...
+	...
+BreakfastCost
+ExtraBedCost
+nFacilities
+	Facility #1
+	Fasility #2
+nSingleRooms
+RoomNr
+nBeds
+breakfastIncluded (0/1)
+nReservations
+arrival
+departure
+nDays
+extraBed (0/1)
+bedInUse (1/2)
+nOccupants
+occupantNames
+nDoubleRooms
+extraBed(0/1)
+RoomNr
+nBeds
+breakfastIncluded (0/1)
+nReservations
+arrival
+departure
+nDays
+extraBed(0/1)
+bedInUse(1/2)
+nOccupants
+occupantNames
+	...
+nSuiteRooms
+nBeds
+bedModifier (+-)
+squareMeters
+roomNr
+nBeds
+breakfastIncluded (0/1)
+nReservations
+arrival
+departure
+nDays
+extraBed (0/1)
+bedInUse (1/2)
+nOccupants
+	names
+	....

@@ -1,0 +1,44 @@
+//  Fil:  FRODEH \ OO \ EXTRAMEN \ EX_J09_1.CPP
+
+//  L›sning til eksamen i OOP, 5.januar 2009, oppgave 1.
+//  Laget av Frode Haug, HiG, desember 2008.
+
+
+
+
+Oppgave 1A:
+
+        SYNTAKTISK  feil i linje nr.9:   Ordet "void" mangler.
+
+        SYNTAKTISK  feil i linje nr.17:  Liten 'f' i "false".
+
+        SEMANTISK   feil i linje nr.20:  Mangler '!' foran f›rste "farlig",
+                                    evt. bytte om utskriftene "ikke " og "".
+
+        SEMANTISK   feil i linje nr.23:  Array til 5 (ikke bare 4).
+
+        SYNTAKTISK  feil i linje nr.23:  Bytte "Dyr" med "Katte".
+
+
+
+
+
+Oppgave 1B:
+
+       DYBD
+       ARKL
+       UBB
+       BULK
+       WWWWAMERA
+
+
+
+
+
+Oppgave 1C:
+
+       0 13
+       0 33 23 4
+       63 43 53 4
+       0 33 23 12
+       7 33 23 12

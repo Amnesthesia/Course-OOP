@@ -1,0 +1,55 @@
+# depslib dependency file v1.0
+1360104909 source:/home/seminex/Documents/Code/OOProg_Oblig1/main.cpp
+	<iostream>
+	<string>
+	"bird.h"
+	"fish.h"
+	"insect.h"
+	"shellfish.h"
+
+1360102508 source:/home/seminex/Documents/Code/OOProg_Oblig1/aerial_species.cpp
+	"aerial_species.h"
+
+1360102095 /home/seminex/Documents/Code/OOProg_Oblig1/aerial_species.h
+	"animal.h"
+
+1360105257 /home/seminex/Documents/Code/OOProg_Oblig1/animal.h
+	<string>
+	<iostream>
+
+1360101858 source:/home/seminex/Documents/Code/OOProg_Oblig1/animal.cpp
+	"animal.h"
+
+1360102829 source:/home/seminex/Documents/Code/OOProg_Oblig1/bird.cpp
+	"bird.h"
+
+1360102650 /home/seminex/Documents/Code/OOProg_Oblig1/bird.h
+	"aerial_species.h"
+
+1360104355 source:/home/seminex/Documents/Code/OOProg_Oblig1/fish.cpp
+	"fish.h"
+
+1360104066 /home/seminex/Documents/Code/OOProg_Oblig1/fish.h
+	"aquatic_species.h"
+
+1360088669 /home/seminex/Documents/Code/OOProg_Oblig1/marine_species.h
+	"animal.h"
+
+1360102603 source:/home/seminex/Documents/Code/OOProg_Oblig1/insect.cpp
+	"insect.h"
+
+1360102529 /home/seminex/Documents/Code/OOProg_Oblig1/insect.h
+	"aerial_species.h"
+
+1360103287 source:/home/seminex/Documents/Code/OOProg_Oblig1/aquatic_species.cpp
+	"aquatic_species.h"
+
+1360103497 /home/seminex/Documents/Code/OOProg_Oblig1/aquatic_species.h
+	"animal.h"
+
+1360102947 source:/home/seminex/Documents/Code/OOProg_Oblig1/shellfish.cpp
+	"shellfish.h"
+
+1360102846 /home/seminex/Documents/Code/OOProg_Oblig1/shellfish.h
+	"aquatic_species.h"
+
